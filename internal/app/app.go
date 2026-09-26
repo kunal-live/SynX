@@ -13,6 +13,7 @@ import (
 	"synx/internal/config"
 	"synx/internal/discovery"
 	"synx/internal/events"
+	"synx/internal/filesystem"
 	"synx/internal/history"
 	"synx/internal/identity"
 	"synx/internal/observability"
@@ -238,6 +239,20 @@ func (a *App) GetHistory(limit int) []history.Entry {
 	}
 	list, _ := a.History.List(limit)
 	return list
+}
+
+func (a *App) GetSharedFiles(rel string) ([]filesystem.FileItem, error) {
+	return filesystem.ScanDirectory(a.Config.Storage.SharedDirectory, rel, filesystem.ScanOptions{
+		ExcludeParts: true,
+	})
+}
+
+func (a *App) DeleteSharedFile(rel string) error {
+	target, err := filesystem.ResolveSafePath(a.Config.Storage.SharedDirectory, rel)
+	if err != nil {
+		return err
+	}
+	return os.RemoveAll(target)
 }
 
 func localIPv4() string {

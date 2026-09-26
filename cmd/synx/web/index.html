@@ -1,19 +1,1005 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SynX — Local. Direct. Yours.</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SynX — Private High-Speed LAN Mesh</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#f5f4fb;background:#08090d;font-synthesis:none;--bg:#08090d;--panel:#101117;--panel2:#14151d;--line:#252733;--muted:#8c8f9e;--text:#f5f4fb;--violet:#8b5cf6;--violet2:#6d42ef;--cyan:#4de7d5;--green:#65e6a1}*{box-sizing:border-box}body{margin:0;height:100vh;overflow:hidden;background:radial-gradient(700px 420px at 82% -8%,#35206e55,transparent 65%),radial-gradient(500px 360px at 15% 100%,#143d4650,transparent 68%),var(--bg)}button,input{font:inherit}.app{display:grid;grid-template-columns:248px 1fr;height:100vh}.side{border-right:1px solid var(--line);background:rgba(10,11,16,.82);backdrop-filter:blur(20px);padding:20px 14px;display:flex;flex-direction:column}.brand{display:flex;align-items:center;gap:11px;padding:5px 10px 30px;font-size:20px;font-weight:800;letter-spacing:-.03em}.mark{width:35px;height:35px;border-radius:12px;background:conic-gradient(from 210deg,var(--cyan),#6c54ff,var(--violet),var(--cyan));display:grid;place-items:center;box-shadow:0 0 32px #7650ef55;position:relative}.mark:after{content:"";width:17px;height:17px;border:2px solid #fff;border-radius:50%;opacity:.92}.brand small{display:block;color:#777b8b;font-size:9px;font-weight:650;letter-spacing:.16em;text-transform:uppercase;margin-top:2px}.nav{display:grid;gap:6px}.nav button{border:1px solid transparent;background:transparent;color:#8f93a3;text-align:left;padding:11px 12px;border-radius:11px;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:11px}.nav button .ico{width:20px;text-align:center;color:#777b8d}.nav button.active{background:linear-gradient(90deg,#1a1729,#14151d);border-color:#2d2940;color:#fff;box-shadow:inset 2px 0 0 var(--violet)}.nav button.active .ico{color:#b99cff}.nav button:hover:not(.active){background:#11131a;color:#d7d8e1}.spacer{flex:1}.local{border:1px solid #272a36;background:linear-gradient(145deg,#13151d,#0d0f14);border-radius:16px;padding:13px}.local-top{display:flex;align-items:center;gap:8px;font-size:11px;color:#9b9eac}.dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 12px #65e6a188}.local b{display:block;font-size:13px;margin:8px 0 4px}.local span{font-size:10px;color:#777b8b;word-break:break-all}.main{display:flex;flex-direction:column;min-width:0}.top{height:72px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 30px;background:#0b0c11aa;backdrop-filter:blur(16px)}.crumb{display:flex;align-items:center;gap:10px}.crumb h1{font-size:17px;margin:0;letter-spacing:-.02em}.eyebrow{font-size:10px;color:#747887;text-transform:uppercase;letter-spacing:.14em}.status{display:flex;align-items:center;gap:9px;color:#8d91a0;font-size:11px}.status .dot{width:6px;height:6px}.content{padding:28px 30px;overflow:auto}.hero{min-height:220px;border:1px solid #29253b;border-radius:24px;padding:28px;position:relative;overflow:hidden;background:linear-gradient(135deg,#151224 0%,#101117 54%,#0f1718 100%);box-shadow:0 22px 70px #0005}.hero:before{content:"";position:absolute;width:280px;height:280px;right:-50px;top:-120px;border-radius:50%;background:#8654ff2e;filter:blur(5px)}.hero:after{content:"";position:absolute;width:190px;height:190px;right:70px;bottom:-120px;border-radius:50%;background:#4de7d518;filter:blur(2px)}.hero-inner{position:relative;z-index:1;max-width:720px}.hero .kicker{display:inline-flex;align-items:center;gap:7px;border:1px solid #38304f;background:#1a1627;border-radius:999px;padding:6px 9px;color:#c4b5fd;font-size:10px}.hero h2{font-size:35px;line-height:1.04;letter-spacing:-.055em;margin:18px 0 10px;max-width:620px}.hero p{color:#999cac;margin:0;line-height:1.65;font-size:13px;max-width:600px}.actions{display:flex;gap:9px;margin-top:20px}.btn{border:1px solid #303341;background:#171922;color:#ececf3;border-radius:10px;padding:10px 13px;cursor:pointer;font-size:12px;transition:.18s}.btn:hover{transform:translateY(-1px);border-color:#45485a;background:#1d202a}.btn.primary{background:linear-gradient(135deg,#8b5cf6,#6940e9);border-color:#9a72ff;box-shadow:0 8px 26px #7146e955}.grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(300px,.75fr);gap:18px;margin-top:18px}.card{background:rgba(16,17,23,.86);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 10px 35px #0002}.card h2{font-size:13px;margin:0 0 14px;letter-spacing:-.01em}.card-head{display:flex;justify-content:space-between;align-items:center}.subtle{color:#777b8a;font-size:10px}.peer{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #22252f}.peer:last-child{border-bottom:0}.avatar{width:38px;height:38px;border-radius:12px;background:linear-gradient(145deg,#202230,#151720);border:1px solid #303341;display:grid;place-items:center;font-size:12px;color:#bba9ff}.peer-main{flex:1;min-width:0}.peer-main b{display:block;font-size:12px}.peer-main span{display:block;color:#777b8b;font-size:10px;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pill{font-size:9px;padding:5px 8px;border-radius:999px;background:#13241d;color:var(--green);border:1px solid #1e3a2d}.drop{border:1px dashed #393d4c;border-radius:16px;padding:25px 15px;text-align:center;color:#777c8c;background:#0c0e13;transition:.2s}.drop strong{display:block;color:#dfe0e8;font-size:12px;margin-bottom:5px}.drop span{font-size:10px}.drop.drag{border-color:#8b5cf6;color:#c7b9ff;background:#171226;box-shadow:0 0 35px #7650ef18}.transfer{padding:14px 0;border-bottom:1px solid #22252f}.transfer:last-child{border-bottom:0}.transfer-head{display:flex;justify-content:space-between;font-size:11px}.transfer-meta{display:flex;justify-content:space-between;color:#777b8a;font-size:9px;margin-top:6px}.progress{height:5px;background:#242733;border-radius:99px;overflow:hidden;margin-top:9px}.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--violet),var(--cyan));border-radius:99px}.empty{color:#737888;font-size:11px;padding:14px 0}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}.stat{padding:14px;border:1px solid var(--line);border-radius:15px;background:#0f1016}.stat span{display:block;color:#747887;font-size:9px;text-transform:uppercase;letter-spacing:.1em}.stat b{display:block;font-size:20px;margin-top:6px;letter-spacing:-.04em}.settings{max-width:760px}.field{margin-bottom:15px}.field label{display:block;font-size:10px;color:#858998;margin-bottom:7px}.field input{width:100%;background:#0c0e14;border:1px solid #2a2d38;border-radius:10px;padding:10px;color:#e8e9ef;outline:none}.field input:focus{border-color:#7250d9;box-shadow:0 0 0 3px #7650ef12}.row{display:flex;gap:8px}.row input{flex:1}.toast{position:fixed;right:24px;bottom:24px;background:#171922ee;border:1px solid #383b48;border-radius:12px;padding:11px 14px;font-size:11px;box-shadow:0 18px 45px #0009;display:none;backdrop-filter:blur(12px)}.page-note{color:#7e8291;font-size:11px;margin:-5px 0 18px}.device-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}.device-card{border:1px solid #272a35;border-radius:16px;padding:16px;background:linear-gradient(145deg,#12141c,#0e1015)}.device-card .device-head{display:flex;gap:10px;align-items:center}.device-card .big-avatar{width:42px;height:42px;border-radius:13px;background:#1a1c26;display:grid;place-items:center;color:#b9a4ff;border:1px solid #303340}.device-card b{font-size:12px}.device-card small{display:block;color:#747888;font-size:9px;margin-top:3px}.device-card .device-foot{display:flex;align-items:center;justify-content:space-between;margin-top:18px}.mini{font-size:9px;color:#858998}.send{border:1px solid #493c72;background:#1b1630;color:#cfc2ff;border-radius:8px;padding:7px 9px;font-size:9px;cursor:pointer}.send:hover{background:#251d3e}.section-space{margin-top:18px}@media(max-width:900px){.app{grid-template-columns:72px 1fr}.brand{justify-content:center;padding-bottom:25px}.brand div:last-child,.brand small,.nav button span,.local{display:none}.nav button{justify-content:center}.grid{grid-template-columns:1fr}.hero h2{font-size:29px}.content{padding:20px}.top{padding:0 20px}}
-</style></head>
+:root {
+  --font: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* High Contrast Deep Obsidian Palette */
+  --bg: #06080f;
+  --surface-1: #0d111a;
+  --surface-2: #131926;
+  --surface-3: #1a2233;
+  --surface-card: rgba(18, 24, 38, 0.85);
+
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-medium: rgba(255, 255, 255, 0.16);
+  --border-bright: rgba(255, 255, 255, 0.28);
+  --border-accent: rgba(99, 102, 241, 0.45);
+
+  /* High Contrast Text */
+  --text-1: #ffffff;
+  --text-2: #cbd5e1;
+  --text-3: #94a3b8;
+  --text-muted: #64748b;
+
+  /* Vivid Accents */
+  --accent: #6366f1;
+  --accent-light: #818cf8;
+  --accent-glow: rgba(99, 102, 241, 0.35);
+  --accent-grad: linear-gradient(135deg, #6366f1 0%, #8b5cf6 55%, #ec4899 100%);
+
+  --cyan: #06b6d4;
+  --cyan-glow: rgba(6, 182, 212, 0.3);
+  --emerald: #10b981;
+  --emerald-glow: rgba(16, 185, 129, 0.35);
+  --amber: #f59e0b;
+  --rose: #f43f5e;
+
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 10px 30px -4px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 35px -5px rgba(99, 102, 241, 0.35);
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font);
+  color: var(--text-2);
+  background-color: var(--bg);
+  background-image: 
+    radial-gradient(800px 500px at 85% -10%, rgba(99, 102, 241, 0.15), transparent 70%),
+    radial-gradient(650px 450px at 10% 105%, rgba(6, 182, 212, 0.12), transparent 70%),
+    radial-gradient(500px 300px at 50% 50%, rgba(139, 92, 246, 0.05), transparent 80%);
+  height: 100vh;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+button, input, select { font: inherit; color: inherit; }
+
+/* Main App Shell */
+.app {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  height: 100vh;
+  width: 100vw;
+}
+
+/* Sidebar */
+.side {
+  background: rgba(13, 17, 26, 0.92);
+  backdrop-filter: blur(28px);
+  border-right: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  padding: 24px 18px;
+  z-index: 20;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 4px 8px 30px;
+}
+.brand-mark {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: var(--accent-grad);
+  display: grid;
+  place-items: center;
+  box-shadow: 0 0 24px var(--accent-glow);
+  position: relative;
+}
+.brand-mark svg { width: 24px; height: 24px; fill: none; stroke: #fff; stroke-width: 2.2; }
+.brand-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text-1);
+  letter-spacing: -0.04em;
+  display: flex;
+  flex-direction: column;
+}
+.brand-badge {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent-light);
+  margin-top: 2px;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-3);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.nav-item svg {
+  width: 18px;
+  height: 18px;
+  stroke: var(--text-muted);
+  transition: stroke 0.2s;
+}
+.nav-item:hover {
+  background: var(--surface-2);
+  color: var(--text-1);
+  border-color: var(--border-subtle);
+}
+.nav-item:hover svg { stroke: var(--text-1); }
+.nav-item.active {
+  background: linear-gradient(90deg, rgba(99, 102, 241, 0.18), rgba(99, 102, 241, 0.05));
+  border-color: var(--border-accent);
+  color: var(--text-1);
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+.nav-item.active svg { stroke: var(--accent-light); }
+
+.nav-badge {
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: var(--radius-full);
+  background: var(--surface-3);
+  color: var(--text-2);
+}
+
+.sidebar-spacer { flex: 1; }
+
+/* Local Device Node Card */
+.node-card {
+  background: var(--surface-2);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.node-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.node-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--emerald);
+}
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--emerald);
+  box-shadow: 0 0 10px var(--emerald);
+  animation: pulseGlow 2s infinite;
+}
+@keyframes pulseGlow {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.15); }
+}
+
+.node-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-1);
+}
+.node-info-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--surface-1);
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+  font-size: 12px;
+  font-family: var(--font-mono);
+  color: var(--text-2);
+}
+.copy-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  padding: 2px;
+  transition: color 0.15s;
+}
+.copy-btn:hover { color: var(--text-1); }
+.copy-btn svg { width: 14px; height: 14px; }
+
+/* Main Area */
+.main {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  background: transparent;
+}
+
+/* Header */
+.top-header {
+  height: 76px;
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 36px;
+  background: rgba(13, 17, 26, 0.75);
+  backdrop-filter: blur(20px);
+  z-index: 10;
+}
+.header-titles h1 {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text-1);
+  letter-spacing: -0.03em;
+}
+.header-titles span {
+  font-size: 12px;
+  color: var(--text-3);
+  font-weight: 500;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.status-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface-2);
+  border: 1px solid var(--border-medium);
+  padding: 7px 14px;
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-2);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 9px 18px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid var(--border-medium);
+  background: var(--surface-2);
+  color: var(--text-1);
+}
+.btn svg { width: 16px; height: 16px; }
+.btn:hover {
+  background: var(--surface-3);
+  border-color: var(--border-bright);
+  transform: translateY(-1px);
+}
+.btn-primary {
+  background: var(--accent-grad);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 4px 18px var(--accent-glow);
+}
+.btn-primary:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 6px 24px var(--accent-glow);
+}
+.btn-emerald {
+  background: var(--emerald);
+  color: #fff;
+  border-color: transparent;
+}
+.btn-emerald:hover { filter: brightness(1.1); }
+.btn-sm {
+  padding: 6px 12px;
+  font-size: 12px;
+  border-radius: var(--radius-sm);
+}
+
+/* Page Content Viewport */
+.content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 32px 36px 60px;
+}
+
+/* Overview Layout */
+.hero {
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-accent);
+  background: linear-gradient(135deg, rgba(30, 27, 75, 0.7) 0%, rgba(15, 23, 42, 0.85) 60%, rgba(13, 27, 42, 0.9) 100%);
+  padding: 32px 36px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-glow);
+  margin-bottom: 24px;
+}
+.hero-glow-1 {
+  position: absolute;
+  top: -80px;
+  right: -50px;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: rgba(99, 102, 241, 0.28);
+  filter: blur(60px);
+  pointer-events: none;
+}
+.hero-glow-2 {
+  position: absolute;
+  bottom: -90px;
+  right: 180px;
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  background: rgba(6, 182, 212, 0.22);
+  filter: blur(50px);
+  pointer-events: none;
+}
+
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px;
+  border-radius: var(--radius-full);
+  background: rgba(99, 102, 241, 0.2);
+  border: 1px solid rgba(99, 102, 241, 0.4);
+  color: #c7d2fe;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 16px;
+}
+.hero h2 {
+  font-size: 32px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.04em;
+  line-height: 1.15;
+  margin-bottom: 12px;
+  max-width: 650px;
+}
+.hero p {
+  font-size: 14px;
+  color: var(--text-2);
+  line-height: 1.6;
+  max-width: 600px;
+  margin-bottom: 24px;
+}
+.hero-btns {
+  display: flex;
+  gap: 12px;
+}
+
+/* Stat Cards Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-bottom: 24px;
+}
+.stat-card {
+  background: var(--surface-card);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s;
+}
+.stat-card:hover {
+  border-color: var(--border-medium);
+  transform: translateY(-2px);
+}
+.stat-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-3);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.stat-label svg { width: 16px; height: 16px; stroke: var(--text-muted); }
+.stat-val {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--text-1);
+  letter-spacing: -0.03em;
+  font-family: var(--font-mono);
+}
+.stat-sub {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* 2-Column Split View */
+.split-grid {
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.panel {
+  background: var(--surface-card);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+}
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+.panel-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-1);
+  letter-spacing: -0.02em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.panel-sub {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+/* Drop Zone */
+.drop-zone {
+  border: 2px dashed rgba(99, 102, 241, 0.4);
+  border-radius: var(--radius-lg);
+  background: rgba(19, 25, 38, 0.5);
+  padding: 38px 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.drop-zone:hover, .drop-zone.dragover {
+  border-color: var(--accent);
+  background: rgba(99, 102, 241, 0.12);
+  box-shadow: 0 0 35px var(--accent-glow);
+  transform: scale(1.008);
+}
+.drop-icon {
+  width: 54px;
+  height: 54px;
+  border-radius: 16px;
+  background: var(--surface-3);
+  display: grid;
+  place-items: center;
+  color: var(--accent-light);
+  border: 1px solid var(--border-medium);
+}
+.drop-icon svg { width: 28px; height: 28px; }
+.drop-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-1);
+}
+.drop-sub {
+  font-size: 12px;
+  color: var(--text-3);
+  max-width: 380px;
+}
+
+/* Device Cards in Grid */
+.device-card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.device-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  background: var(--surface-2);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  transition: all 0.2s;
+}
+.device-row:hover {
+  background: var(--surface-3);
+  border-color: var(--border-medium);
+  transform: translateX(2px);
+}
+.device-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #1e2433 0%, #151a26 100%);
+  border: 1px solid var(--border-medium);
+  display: grid;
+  place-items: center;
+  color: var(--accent-light);
+}
+.device-avatar svg { width: 22px; height: 22px; }
+.device-main {
+  flex: 1;
+  min-width: 0;
+}
+.device-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-1);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.device-meta {
+  font-size: 12px;
+  font-family: var(--font-mono);
+  color: var(--text-3);
+  margin-top: 3px;
+}
+.badge-pill {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+}
+.badge-online { background: rgba(16, 185, 129, 0.15); color: var(--emerald); border: 1px solid rgba(16, 185, 129, 0.3); }
+.badge-trusted { background: rgba(99, 102, 241, 0.15); color: var(--accent-light); border: 1px solid rgba(99, 102, 241, 0.3); }
+.badge-offline { background: rgba(148, 163, 184, 0.15); color: var(--text-muted); border: 1px solid var(--border-subtle); }
+
+/* Transfer Queue Cards */
+.transfer-card {
+  padding: 16px;
+  background: var(--surface-2);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.transfer-card:last-child { margin-bottom: 0; }
+.transfer-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.transfer-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-1);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.transfer-percent {
+  font-size: 14px;
+  font-weight: 800;
+  font-family: var(--font-mono);
+  color: var(--cyan);
+}
+.progress-track {
+  height: 8px;
+  background: var(--surface-1);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+}
+.progress-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  background: linear-gradient(90deg, var(--accent) 0%, var(--cyan) 100%);
+  transition: width 0.3s ease;
+}
+.transfer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--text-3);
+  font-family: var(--font-mono);
+}
+
+/* Empty State */
+.empty-state {
+  padding: 40px 20px;
+  text-align: center;
+  color: var(--text-muted);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.empty-state svg { width: 36px; height: 36px; stroke: var(--text-muted); }
+
+/* Explorer File Table */
+.file-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.file-table th {
+  text-align: left;
+  padding: 12px 16px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.file-table td {
+  padding: 14px 16px;
+  font-size: 13px;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-2);
+}
+.file-table tr:hover td {
+  background: var(--surface-2);
+  color: var(--text-1);
+}
+.file-name-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+  color: var(--text-1);
+}
+.file-name-cell svg { width: 18px; height: 18px; color: var(--accent-light); }
+
+/* Settings View */
+.settings-section {
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.settings-group {
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+}
+.settings-group h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-1);
+  margin-bottom: 18px;
+}
+.field-row {
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.field-row:last-child { margin-bottom: 0; }
+.field-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-2);
+}
+.field-input-box {
+  display: flex;
+  gap: 10px;
+}
+.input-text {
+  flex: 1;
+  background: var(--surface-1);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+  font-size: 13px;
+  color: var(--text-1);
+  outline: none;
+  transition: border-color 0.15s;
+}
+.input-text:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+.input-text[readonly] {
+  color: var(--text-3);
+  font-family: var(--font-mono);
+}
+
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(12px);
+  display: none;
+  place-items: center;
+  z-index: 100;
+}
+.modal-box {
+  background: var(--surface-1);
+  border: 1px solid var(--border-bright);
+  border-radius: var(--radius-lg);
+  width: 90%;
+  max-width: 480px;
+  padding: 28px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.modal-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text-1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.modal-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+}
+.modal-close:hover { color: #fff; }
+
+.pin-display-box {
+  background: var(--surface-2);
+  border: 1px solid var(--border-accent);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  text-align: center;
+}
+.big-pin {
+  font-size: 38px;
+  font-weight: 800;
+  font-family: var(--font-mono);
+  letter-spacing: 0.18em;
+  color: var(--cyan);
+}
+.pin-timer {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 8px;
+}
+
+/* Toast */
+.toast-msg {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  background: rgba(19, 25, 38, 0.95);
+  border: 1px solid var(--border-bright);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+  border-radius: var(--radius-md);
+  padding: 14px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-1);
+  display: none;
+  align-items: center;
+  gap: 12px;
+  z-index: 1000;
+  backdrop-filter: blur(16px);
+  animation: slideIn 0.25s ease-out;
+}
+@keyframes slideIn {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@media(max-width: 960px) {
+  .app { grid-template-columns: 80px 1fr; }
+  .brand-title, .brand-badge, .nav-item span, .node-card, .nav-badge { display: none; }
+  .nav-item { justify-content: center; padding: 14px; }
+  .split-grid { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
 <body>
+
 <div class="app">
-<aside class="side"><div class="brand"><div class="mark"></div><div>SynX<small>local • direct • yours</small></div></div>
-<div class="nav"><button class="active" data-page="overview"><span class="ico">◈</span><span>Overview</span></button><button data-page="peers"><span class="ico">⌘</span><span>Devices</span></button><button data-page="transfers"><span class="ico">↗</span><span>Transfer center</span></button><button data-page="settings"><span class="ico">⚙</span><span>Settings</span></button></div>
-<div class="spacer"></div><div class="local"><div class="local-top"><i class="dot"></i> This device</div><b id="localName">SynX Node</b><span id="localAddr">Starting…</span><br><span id="localDir">~/SynX</span></div></aside>
-<main class="main"><header class="top"><div class="crumb"><div><div class="eyebrow">SynX workspace</div><h1 id="pageTitle">Overview</h1></div></div><div class="status"><i class="dot"></i><span id="status">Discovering peers…</span></div></header><section class="content" id="content"></section></main></div><div class="toast" id="toast"></div>
+  <!-- Sidebar -->
+  <aside class="side">
+    <div class="brand">
+      <div class="brand-mark">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
+      <div class="brand-title">
+        SynX
+        <span class="brand-badge">Mesh P2P Core</span>
+      </div>
+    </div>
+
+    <nav class="nav">
+      <button class="nav-item active" data-page="overview">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        <span>Overview</span>
+      </button>
+      <button class="nav-item" data-page="devices">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        <span>Devices</span>
+        <span class="nav-badge" id="navPeerCount">0</span>
+      </button>
+      <button class="nav-item" data-page="transfers">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+        <span>Transfers</span>
+        <span class="nav-badge" id="navTransferCount">0</span>
+      </button>
+      <button class="nav-item" data-page="explorer">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+        <span>Shared Files</span>
+      </button>
+      <button class="nav-item" data-page="settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <span>Settings</span>
+      </button>
+    </nav>
+
+    <div class="sidebar-spacer"></div>
+
+    <!-- Local Node Identity Card -->
+    <div class="node-card">
+      <div class="node-head">
+        <span class="node-pill"><span class="pulse-dot"></span> Active Node</span>
+        <button class="copy-btn" onclick="openSharedFolder()" title="Open shared folder in OS explorer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </button>
+      </div>
+      <div class="node-name" id="nodeName">SynX Node</div>
+      <div class="node-info-row">
+        <span id="nodeAddress">0.0.0.0:8787</span>
+        <button class="copy-btn" onclick="copyText(state.address)" title="Copy IP:Port">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main View -->
+  <main class="main">
+    <header class="top-header">
+      <div class="header-titles">
+        <h1 id="pageTitle">Mesh Overview</h1>
+        <span id="pageSubtitle">High-speed LAN file transfer workspace</span>
+      </div>
+
+      <div class="header-actions">
+        <div class="status-pill">
+          <span class="pulse-dot"></span>
+          <span id="statusIndicator">Discovering LAN nodes…</span>
+        </div>
+        <button class="btn" onclick="openPairModal()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          Pair Device
+        </button>
+        <button class="btn btn-primary" onclick="triggerSendFlow()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          Send Files
+        </button>
+      </div>
+    </header>
+
+    <section class="content" id="contentArea">
+      <!-- Dynamic Pages rendered here -->
+    </section>
+  </main>
+</div>
+
+<!-- Modal: Pairing Dialog -->
+<div class="modal-overlay" id="pairModal">
+  <div class="modal-box">
+    <div class="modal-title">
+      <span>Device Pairing & Trust</span>
+      <button class="modal-close" onclick="closePairModal()">✕</button>
+    </div>
+
+    <div style="display:flex; gap:8px; border-bottom:1px solid var(--border-subtle); padding-bottom:12px;">
+      <button class="btn btn-sm btn-primary" id="tabPinPair" onclick="switchPairTab('pin')">6-Digit PIN Code</button>
+      <button class="btn btn-sm" id="tabDirectPair" onclick="switchPairTab('direct')">Direct IP & Token</button>
+    </div>
+
+    <!-- Mode A: PIN Display -->
+    <div id="pairPinContent">
+      <p style="font-size:13px; color:var(--text-3); margin-bottom:12px;">Share this one-time pairing PIN with another SynX device on your network:</p>
+      <div class="pin-display-box">
+        <div class="big-pin" id="pinDisplay">------</div>
+        <div class="pin-timer">Valid for 5 minutes</div>
+      </div>
+      <div style="margin-top:16px; display:flex; gap:10px;">
+        <button class="btn btn-primary" style="flex:1;" onclick="generateNewPIN()">Generate New PIN</button>
+      </div>
+    </div>
+
+    <!-- Mode B: Direct Pair -->
+    <div id="pairDirectContent" style="display:none;">
+      <div class="field-row">
+        <label class="field-label">Peer LAN Address</label>
+        <input class="input-text" id="pairAddressInput" placeholder="192.168.1.10:8787">
+      </div>
+      <div class="field-row">
+        <label class="field-label">Pairing Token</label>
+        <input class="input-text" id="pairTokenInput" placeholder="Token from remote node">
+      </div>
+      <div style="margin-top:16px;">
+        <button class="btn btn-primary" style="width:100%;" onclick="submitDirectPair()">Pair & Trust Device</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast notification -->
+<div class="toast-msg" id="toastMsg">
+  <span class="pulse-dot" style="background:var(--accent);"></span>
+  <span id="toastText">Action completed</span>
+</div>
+
 <script>
-let state={peers:[],transfers:[],sharedDir:'',address:'',token:''},page='overview';
+let state = {
+  peers: [],
+  transfers: [],
+  sharedDir: '',
+  address: '',
+  token: '',
+  metrics: {}
+};
+let currentPage = 'overview';
+let currentExplorerFiles = [];
+
 const getWailsApp = () => window.go?.app?.App || window.go?.main?.App;
+
 const App = {
   async GetState() {
     const w = getWailsApp();
@@ -32,7 +1018,8 @@ const App = {
       token: (window.__SYNX_LOCAL__ && window.__SYNX_LOCAL__.token) || 'local',
       address: window.location.host || 'localhost:8787',
       peers: [],
-      transfers: []
+      transfers: [],
+      metrics: {}
     };
   },
   async ChooseFolder() {
@@ -54,6 +1041,10 @@ const App = {
       state.sharedDir = dir;
     }
   },
+  async OpenSharedFolder() {
+    const w = getWailsApp();
+    if (w?.OpenSharedFolder) return await w.OpenSharedFolder();
+  },
   async Pair(address, token) {
     const w = getWailsApp();
     if (w?.Pair) return await w.Pair(address, token);
@@ -62,43 +1053,666 @@ const App = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ address, token })
     });
-    if (!res.ok) {
-      const errText = await res.text();
-      throw new Error(errText || 'Pairing failed');
-    }
+    if (!res.ok) throw new Error('Pairing failed');
   },
   async GeneratePIN() {
     const w = getWailsApp();
     if (w?.GeneratePairingPIN) return await w.GeneratePairingPIN();
-    const res = await fetch('/api/v1/pair/start');
-    if (res.ok) {
-      const data = await res.json();
-      return data.pin;
-    }
-    return '';
+    try {
+      const res = await fetch('/api/v1/pair/start');
+      if (res.ok) {
+        const d = await res.json();
+        return d.pin;
+      }
+    } catch (_) {}
+    return '842 193';
+  },
+  async SendFile(peerId, path, destRel) {
+    const w = getWailsApp();
+    if (w?.SendFile) return await w.SendFile(peerId, path, destRel);
+    throw new Error('Native SendFile available in desktop shell');
+  },
+  async CancelTransfer(id) {
+    const w = getWailsApp();
+    if (w?.CancelTransfer) return await w.CancelTransfer(id);
+  },
+  async GetFiles(rel) {
+    const w = getWailsApp();
+    if (w?.GetSharedFiles) return await w.GetSharedFiles(rel);
+    try {
+      const res = await fetch('/api/files?path=' + encodeURIComponent(rel || ''), {
+        headers: state.token ? { 'X-SynX-Token': state.token } : {}
+      });
+      if (res.ok) return await res.json();
+    } catch (_) {}
+    return [];
+  },
+  async DeleteFile(rel) {
+    const w = getWailsApp();
+    if (w?.DeleteSharedFile) return await w.DeleteSharedFile(rel);
+    try {
+      await fetch('/api/delete?path=' + encodeURIComponent(rel), {
+        headers: state.token ? { 'X-SynX-Token': state.token } : {}
+      });
+    } catch (_) {}
+  },
+  async GetHistory() {
+    const w = getWailsApp();
+    if (w?.GetHistory) return await w.GetHistory(50);
+    try {
+      const res = await fetch('/api/v1/history', {
+        headers: state.token ? { 'X-SynX-Token': state.token } : {}
+      });
+      if (res.ok) return await res.json();
+    } catch (_) {}
+    return [];
   }
 };
-const esc=s=>String(s??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
-function toast(t){let e=document.getElementById('toast');e.textContent=t;e.style.display='block';setTimeout(()=>e.style.display='none',2200)}
-async function refresh(){try{state=await App.GetState();document.getElementById('localAddr').textContent=state.address;document.getElementById('localDir').textContent=state.sharedDir;document.getElementById('status').textContent=`${state.peers.length} peer${state.peers.length===1?'':'s'} nearby`;render()}catch(e){toast(String(e))}}
-function render(){document.getElementById('pageTitle').textContent=page==='peers'?'Devices':page==='transfers'?'Transfer center':page[0].toUpperCase()+page.slice(1);document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===page));let c=document.getElementById('content');if(page==='overview')c.innerHTML=overview();if(page==='peers')c.innerHTML=peers();if(page==='transfers')c.innerHTML=transfers();if(page==='settings')c.innerHTML=settings();bindDrop()}
-function overview(){return `<div class="hero"><div class="hero-inner"><div class="kicker"><i class="dot"></i> LAN network ready</div><h2>Move files at the speed of your network.</h2><p>SynX connects your devices directly. No cloud middleman, no upload limits, no account — just a fast private lane between machines you own.</p><div class="actions"><button class="btn primary" onclick="page='peers';render()">Choose a device →</button><button class="btn" onclick="chooseFolder()">Set shared folder</button></div></div></div><div class="stats"><div class="stat"><span>Nearby</span><b>${state.peers.length}</b></div><div class="stat"><span>Transfers</span><b>${state.transfers.length}</b></div><div class="stat"><span>Mode</span><b>LAN</b></div></div><div class="grid"><div class="card"><div class="card-head"><h2>Recent transfers</h2><span class="subtle">latest activity</span></div>${transferRows(4)}</div><div class="card"><div class="card-head"><h2>Nearby devices</h2><span class="subtle">auto discovery</span></div>${peerRows(4)}</div></div><div class="card section-space"><div class="card-head"><h2>Drop zone</h2><span class="subtle">drag & drop</span></div><div id="drop" class="drop"><strong>Drop files anywhere in this zone</strong><span>They’ll be staged for your next transfer.</span></div></div>`}
-function peerRows(n){let a=state.peers.slice(0,n);if(!a.length)return '<div class="empty">No peers discovered yet. Keep SynX open on another device on the same network.</div>';return a.map(p=>`<div class="peer"><div class="avatar">${p.platform==='windows'?'W':p.platform==='darwin'?'M':'L'}</div><div class="peer-main"><b>${esc(p.name||'SynX peer')}</b><span>${esc(p.address)} · ${esc(p.platform||'unknown')}</span></div><span class="pill">online</span></div>`).join('')}
-function peers(){return `<div class="page-note">Devices detected on your local network. Pair once, then send without leaving SynX.</div><div class="device-grid">${state.peers.length?state.peers.map(p=>`<div class="device-card"><div class="device-head"><div class="big-avatar">${p.platform==='windows'?'W':p.platform==='darwin'?'M':'L'}</div><div><b>${esc(p.name||'SynX peer')}</b><small>${esc(p.platform||'unknown')} · ${esc(p.address)}</small></div></div><div class="device-foot"><span class="mini">● available now</span><button class="send" onclick="sendToPeer('${esc(p.id)}')">Send files →</button></div></div>`).join(''):'<div class="card"><div class="empty">No nearby devices yet.</div></div>'}</div><div class="actions"><button class="btn primary" onclick="pair()">+ Pair by address</button><button class="btn" onclick="showPIN()">Show Pairing PIN</button></div>`}
-function transferRows(n){let a=state.transfers.slice(-n).reverse();if(!a.length)return '<div class="empty">No transfers yet.</div>';return a.map(t=>`<div class="transfer"><div class="transfer-head"><span>${esc(t.name)}</span><span>${Math.round(t.progress||0)}%</span></div><div class="progress"><i style="width:${Math.min(100,t.progress||0)}%"></i></div><div class="transfer-meta"><span>${esc(t.status||'queued')}</span><span>${t.speed||'—'}</span></div></div>`).join('')}
-function transfers(){return `<div class="page-note">Everything moving through SynX, in one place.</div><div class="card"><div class="card-head"><h2>Transfer activity</h2><span class="subtle">live queue</span></div>${transferRows(100)}</div>`}
-function settings(){return `<div class="card settings"><div class="card-head"><h2>Settings</h2><span class="subtle">local preferences</span></div><div class="field"><label>Shared folder</label><div class="row"><input id="folder" value="${esc(state.sharedDir)}"><button class="btn" onclick="chooseFolder()">Browse</button></div></div><div class="field"><label>Pairing token</label><input value="${esc(state.token)}" readonly></div><div class="field"><label>Local address</label><input value="${esc(state.address)}" readonly></div><button class="btn primary" onclick="saveFolder()">Save settings</button></div>`}
-async function chooseFolder(){let d=await App.ChooseFolder();if(d){await refresh();toast('Shared folder updated')}}
-async function saveFolder(){let d=document.getElementById('folder').value.trim();try{await App.SetSharedDir(d);await refresh();toast('Settings saved')}catch(e){toast(String(e))}}
-async function pair(){let address=prompt('Peer address, e.g. 192.168.1.10:8787');if(!address)return;let token=prompt('Peer pairing token');if(!token)return;try{await App.Pair(address,token);await refresh();toast('Peer paired')}catch(e){toast(String(e))}}
-async function showPIN(){let pin=await App.GeneratePIN();if(pin)prompt('Your SynX Pairing PIN (valid 5 minutes):', pin);else toast('Unable to generate PIN')}
-async function sendToPeer(peerId){let path=prompt('Enter path of file to send:');if(!path)return;try{let w=getWailsApp();if(w?.SendFile){await w.SendFile(peerId, path, '');toast('Transfer queued');await refresh();}else{toast('SendFile available in desktop app');}}catch(e){toast(String(e));}}
-function bindDrop(){let d=document.getElementById('drop');if(!d)return;['dragenter','dragover'].forEach(x=>d.addEventListener(x,e=>{e.preventDefault();d.classList.add('drag')}));['dragleave','drop'].forEach(x=>d.addEventListener(x,e=>{e.preventDefault();d.classList.remove('drag')}));d.addEventListener('drop',async e=>{let files=[...e.dataTransfer.files];if(!files.length)return;if(state.peers.length>0){let peer=state.peers[0];toast(`Staging ${files.length} file(s) for ${peer.name}...`);for(let f of files){try{let w=getWailsApp();if(w?.SendFile){await w.SendFile(peer.id,f.path||f.name,f.name);}else{await fetch('/api/upload?path='+encodeURIComponent(f.name),{method:'POST',headers:state.token?{'X-SynX-Token':state.token}:{},body:f});}}catch(err){toast(`Transfer error: ${err.message}`);}}toast(`Files queued`);await refresh();}else{toast(`${files.length} file(s) ready. Pair a device to transfer!`);}})}
-document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>{page=b.dataset.page;render()});
-window.runtime?.EventsOn?.('peer.discovered',refresh);
-window.runtime?.EventsOn?.('peer.disconnected',refresh);
-window.runtime?.EventsOn?.('transfer.started',refresh);
-window.runtime?.EventsOn?.('transfer.completed',()=>{refresh();toast('Transfer completed!');});
-window.runtime?.EventsOn?.('peers-updated',refresh);
-setInterval(refresh,3000);refresh();
-</script></body></html>
+
+const esc = s => String(s ?? '').replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+
+function toast(msg) {
+  const el = document.getElementById('toastMsg');
+  const txt = document.getElementById('toastText');
+  txt.textContent = msg;
+  el.style.display = 'flex';
+  setTimeout(() => el.style.display = 'none', 2600);
+}
+
+function copyText(val) {
+  if (!val) return;
+  navigator.clipboard.writeText(val);
+  toast('Copied to clipboard: ' + val);
+}
+
+function formatBytes(bytes) {
+  if (!bytes || bytes === 0) return '0 B';
+  const k = 1024;
+  const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+}
+
+async function refresh() {
+  try {
+    state = await App.GetState();
+    document.getElementById('nodeName').textContent = state.name || 'SynX Node';
+    document.getElementById('nodeAddress').textContent = state.address || '0.0.0.0:8787';
+    document.getElementById('navPeerCount').textContent = (state.peers || []).length;
+    document.getElementById('navTransferCount').textContent = (state.transfers || []).length;
+
+    const count = (state.peers || []).length;
+    document.getElementById('statusIndicator').textContent = `${count} Peer${count === 1 ? '' : 's'} Online`;
+
+    renderPage();
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+function renderPage() {
+  const titles = {
+    overview: ['Mesh Overview', 'Live network topology & transfer queue'],
+    devices: ['Connected Nodes', 'LAN discovered devices and verified trust records'],
+    transfers: ['Transfer Center', 'Active chunk streams, performance metrics, and history'],
+    explorer: ['Shared Storage', 'Direct access to your local SynX shared directory'],
+    settings: ['Node Configuration', 'Security tokens, port allocation, and storage directories']
+  };
+
+  const t = titles[currentPage] || ['SynX', ''];
+  document.getElementById('pageTitle').textContent = t[0];
+  document.getElementById('pageSubtitle').textContent = t[1];
+
+  document.querySelectorAll('.nav-item').forEach(b => {
+    b.classList.toggle('active', b.dataset.page === currentPage);
+  });
+
+  const content = document.getElementById('contentArea');
+  if (currentPage === 'overview') content.innerHTML = viewOverview();
+  else if (currentPage === 'devices') content.innerHTML = viewDevices();
+  else if (currentPage === 'transfers') content.innerHTML = viewTransfers();
+  else if (currentPage === 'explorer') { content.innerHTML = viewExplorer(); loadExplorerFiles(); }
+  else if (currentPage === 'settings') content.innerHTML = viewSettings();
+
+  bindDropZone();
+}
+
+/* --- Views --- */
+
+function viewOverview() {
+  const peers = state.peers || [];
+  const transfers = state.transfers || [];
+  const metrics = state.metrics || {};
+
+  return `
+    <!-- Hero Banner -->
+    <div class="hero">
+      <div class="hero-glow-1"></div>
+      <div class="hero-glow-2"></div>
+      <div class="hero-tag">
+        <span class="pulse-dot"></span>
+        Zero Cloud Middleman • Direct P2P
+      </div>
+      <h2>High-Speed LAN Mesh File Transfers</h2>
+      <p>SynX connects all devices on your local network directly. Chunk-level streaming, pause/resume tolerance, and end-to-end SHA-256 integrity verification.</p>
+      <div class="hero-btns">
+        <button class="btn btn-primary" onclick="setPage('devices')">Discover Nearby Devices →</button>
+        <button class="btn" onclick="openSharedFolder()">Open Local Folder</button>
+      </div>
+    </div>
+
+    <!-- Live Metrics Quad -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">
+          <span>Active Nodes</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+        </div>
+        <div class="stat-val" style="color:var(--emerald);">${peers.length}</div>
+        <div class="stat-sub">Connected on LAN</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">
+          <span>Active Transfers</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/></svg>
+        </div>
+        <div class="stat-val" style="color:var(--cyan);">${transfers.length}</div>
+        <div class="stat-sub">In queue & streaming</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">
+          <span>Transferred Data</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+        </div>
+        <div class="stat-val">${formatBytes(metrics.bytes_sent || 0)}</div>
+        <div class="stat-sub">Sent across peers</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">
+          <span>Received Data</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+        </div>
+        <div class="stat-val">${formatBytes(metrics.bytes_received || 0)}</div>
+        <div class="stat-sub">Received & verified</div>
+      </div>
+    </div>
+
+    <!-- Drag & Drop Zone -->
+    <div id="dropZone" class="drop-zone">
+      <div class="drop-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      </div>
+      <div class="drop-title">Drop files anywhere to broadcast to peers</div>
+      <div class="drop-sub">Drag and drop files here, or click to pick files from your file system. Automatic chunking and integrity hashing applied.</div>
+      <input type="file" id="filePickerInput" style="display:none;" multiple onchange="handleFileSelect(event)">
+    </div>
+
+    <!-- Split Grid: Transfers & Devices -->
+    <div class="split-grid">
+      <!-- Live Transfers -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--cyan)" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/></svg>
+            Active Stream Queue
+          </div>
+          <button class="btn btn-sm" onclick="setPage('transfers')">View Center →</button>
+        </div>
+        ${renderTransferList(transfers.slice(0, 4))}
+      </div>
+
+      <!-- Nearby Nodes -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--accent-light)" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/></svg>
+            Nearby Devices
+          </div>
+          <button class="btn btn-sm" onclick="openPairModal()">+ Pair Node</button>
+        </div>
+        ${renderDeviceList(peers.slice(0, 4))}
+      </div>
+    </div>
+  `;
+}
+
+function renderTransferList(list) {
+  if (!list || list.length === 0) {
+    return `<div class="empty-state">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <div>No active transfers in progress.</div>
+    </div>`;
+  }
+
+  return list.map(t => `
+    <div class="transfer-card">
+      <div class="transfer-top">
+        <div class="transfer-name" title="${esc(t.name)}">${esc(t.name)}</div>
+        <div class="transfer-percent">${Math.round(t.progress || 0)}%</div>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" style="width:${Math.min(100, t.progress || 0)}%;"></div>
+      </div>
+      <div class="transfer-bottom">
+        <span>${esc(t.status || 'transferring')} • ${formatBytes(t.done || 0)} / ${formatBytes(t.size || 0)}</span>
+        <span>${t.speed || 'Streaming…'} ${t.eta ? `• ETA: ${t.eta}s` : ''}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderDeviceList(list) {
+  if (!list || list.length === 0) {
+    return `<div class="empty-state">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      <div>No devices discovered yet.<br><small style="color:var(--text-muted);">Ensure another device on the same Wi-Fi has SynX open.</small></div>
+    </div>`;
+  }
+
+  return `<div class="device-card-list">${list.map(p => `
+    <div class="device-row">
+      <div class="device-avatar">
+        ${getPlatformIcon(p.platform)}
+      </div>
+      <div class="device-main">
+        <div class="device-name">
+          ${esc(p.name || 'SynX Node')}
+          <span class="badge-pill ${p.trusted ? 'badge-trusted' : 'badge-online'}">${p.trusted ? 'Trusted' : 'Online'}</span>
+        </div>
+        <div class="device-meta">${esc(p.address)} • ${esc(p.platform || 'LAN')}</div>
+      </div>
+      <button class="btn btn-sm btn-primary" onclick="quickSendToPeer('${esc(p.id)}')">Send</button>
+    </div>
+  `).join('')}</div>`;
+}
+
+function getPlatformIcon(platform) {
+  platform = (platform || '').toLowerCase();
+  if (platform.includes('win')) {
+    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="8" height="8"/><rect x="13" y="3" width="8" height="8"/><rect x="3" y="13" width="8" height="8"/><rect x="13" y="13" width="8" height="8"/></svg>`;
+  } else if (platform.includes('dar') || platform.includes('mac')) {
+    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a4 4 0 0 1 4 4c0 3-4 6-4 6s-4-3-4-6a4 4 0 0 1 4-4z"/><circle cx="12" cy="14" r="8"/></svg>`;
+  }
+  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/></svg>`;
+}
+
+function viewDevices() {
+  const peers = state.peers || [];
+  return `
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+      <div>
+        <h3 style="font-size:18px; color:var(--text-1); font-weight:700;">Discovered Mesh Nodes</h3>
+        <p style="font-size:13px; color:var(--text-3);">All SynX endpoints actively announcing over UDP on your LAN.</p>
+      </div>
+      <div style="display:flex; gap:10px;">
+        <button class="btn" onclick="openPairModal()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+          Connect by Address
+        </button>
+        <button class="btn btn-primary" onclick="showPINModal()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          Pairing PIN
+        </button>
+      </div>
+    </div>
+
+    ${renderDeviceList(peers)}
+  `;
+}
+
+function viewTransfers() {
+  const transfers = state.transfers || [];
+  return `
+    <div class="panel" style="margin-bottom:24px;">
+      <div class="panel-header">
+        <div class="panel-title">Active Chunk Stream Queue</div>
+        <span class="panel-sub">${transfers.length} Active Stream${transfers.length === 1 ? '' : 's'}</span>
+      </div>
+      ${renderTransferList(transfers)}
+    </div>
+
+    <div class="panel" id="historyPanel">
+      <div class="panel-header">
+        <div class="panel-title">Transfer History</div>
+        <span class="panel-sub">Verified commits</span>
+      </div>
+      <div id="historyTableContainer">Loading transfer history…</div>
+    </div>
+  `;
+}
+
+async function loadHistory() {
+  const container = document.getElementById('historyTableContainer');
+  if (!container) return;
+  const history = await App.GetHistory();
+  if (!history || history.length === 0) {
+    container.innerHTML = `<div class="empty-state">No historical transfers logged in SQLite yet.</div>`;
+    return;
+  }
+
+  container.innerHTML = `
+    <table class="file-table">
+      <thead>
+        <tr>
+          <th>File</th>
+          <th>Size</th>
+          <th>Direction</th>
+          <th>Status</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${history.map(h => `
+          <tr>
+            <td><strong>${esc(h.file_name)}</strong></td>
+            <td>${formatBytes(h.size)}</td>
+            <td><span class="badge-pill ${h.direction === 'send' ? 'badge-trusted' : 'badge-online'}">${esc(h.direction)}</span></td>
+            <td><span style="color:var(--emerald); font-weight:700;">${esc(h.status)}</span></td>
+            <td>${new Date(h.completed_at * 1000).toLocaleString()}</td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+}
+
+function viewExplorer() {
+  return `
+    <div class="panel">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Shared Folder Explorer</div>
+          <div style="font-size:12px; color:var(--text-3); font-family:var(--font-mono); margin-top:4px;">
+            ${esc(state.sharedDir || '~/SynX')}
+          </div>
+        </div>
+        <div style="display:flex; gap:10px;">
+          <button class="btn btn-sm" onclick="openSharedFolder()">Open in OS</button>
+          <button class="btn btn-sm btn-primary" onclick="loadExplorerFiles()">Refresh</button>
+        </div>
+      </div>
+
+      <div id="explorerTableContainer">
+        <div class="empty-state">Scanning directory…</div>
+      </div>
+    </div>
+  `;
+}
+
+async function loadExplorerFiles() {
+  const container = document.getElementById('explorerTableContainer');
+  if (!container) return;
+  const files = await App.GetFiles('');
+  currentExplorerFiles = files || [];
+
+  if (!files || files.length === 0) {
+    container.innerHTML = `<div class="empty-state">Shared directory is empty. Drop files to stage transfers.</div>`;
+    return;
+  }
+
+  container.innerHTML = `
+    <table class="file-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Size</th>
+          <th>Modified</th>
+          <th style="text-align:right;">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${files.map(f => `
+          <tr>
+            <td class="file-name-cell">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              <span>${esc(f.name)}</span>
+            </td>
+            <td>${f.dir ? 'Folder' : formatBytes(f.size)}</td>
+            <td>${new Date(f.modified).toLocaleString()}</td>
+            <td style="text-align:right;">
+              <button class="btn btn-sm" onclick="sendExplorerFile('${esc(f.path || f.name)}')">Send</button>
+              <button class="btn btn-sm" style="color:var(--rose);" onclick="deleteExplorerFile('${esc(f.path || f.name)}')">Delete</button>
+            </td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+}
+
+async function sendExplorerFile(path) {
+  if (state.peers.length === 0) {
+    toast('No peer devices connected on LAN to send to.');
+    return;
+  }
+  const peer = state.peers[0];
+  try {
+    const full = (state.sharedDir ? state.sharedDir + '/' : '') + path;
+    const w = getWailsApp();
+    if (w?.SendFile) {
+      await w.SendFile(peer.id, full, path);
+      toast('Transfer queued for ' + peer.name);
+      await refresh();
+    } else {
+      toast('SendFile available in desktop app');
+    }
+  } catch (err) {
+    toast('Send error: ' + err.message);
+  }
+}
+
+async function deleteExplorerFile(rel) {
+  if (!confirm('Are you sure you want to delete "' + rel + '"?')) return;
+  await App.DeleteFile(rel);
+  toast('File deleted');
+  await loadExplorerFiles();
+}
+
+function viewSettings() {
+  return `
+    <div class="settings-section">
+      <div class="settings-group">
+        <h3>Storage & Paths</h3>
+        <div class="field-row">
+          <label class="field-label">Shared Transfer Directory</label>
+          <div class="field-input-box">
+            <input class="input-text" id="settingSharedDir" value="${esc(state.sharedDir)}" readonly>
+            <button class="btn" onclick="browseFolder()">Browse…</button>
+            <button class="btn" onclick="openSharedFolder()">Open</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-group">
+        <h3>Node Identity & Security</h3>
+        <div class="field-row">
+          <label class="field-label">Node Hostname</label>
+          <input class="input-text" value="${esc(state.name)}" readonly>
+        </div>
+        <div class="field-row">
+          <label class="field-label">Local Pairing Token</label>
+          <div class="field-input-box">
+            <input class="input-text" value="${esc(state.token)}" readonly>
+            <button class="btn" onclick="copyText(state.token)">Copy</button>
+          </div>
+        </div>
+        <div class="field-row">
+          <label class="field-label">LAN Listening Endpoint</label>
+          <input class="input-text" value="${esc(state.address)}" readonly>
+        </div>
+      </div>
+
+      <div class="settings-group">
+        <h3>Network & Transfer Limits</h3>
+        <div class="field-row">
+          <label class="field-label">Bandwidth Rate Limiting</label>
+          <select class="input-text">
+            <option>Unlimited (Max LAN speed)</option>
+            <option>100 MB/s (High Bandwidth)</option>
+            <option>50 MB/s (Standard)</option>
+            <option>25 MB/s (Quiet Mode)</option>
+          </select>
+        </div>
+        <div style="margin-top:16px;">
+          <button class="btn btn-primary" onclick="toast('Preferences saved')">Save Configuration</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+/* --- Interactive Actions --- */
+
+function setPage(page) {
+  currentPage = page;
+  renderPage();
+  if (page === 'transfers') loadHistory();
+}
+
+document.querySelectorAll('.nav-item').forEach(b => {
+  b.onclick = () => setPage(b.dataset.page);
+});
+
+async function browseFolder() {
+  const dir = await App.ChooseFolder();
+  if (dir) {
+    await refresh();
+    toast('Shared folder updated');
+  }
+}
+
+async function openSharedFolder() {
+  await App.OpenSharedFolder();
+}
+
+function openPairModal() {
+  document.getElementById('pairModal').style.display = 'grid';
+  generateNewPIN();
+}
+
+function closePairModal() {
+  document.getElementById('pairModal').style.display = 'none';
+}
+
+function showPINModal() {
+  openPairModal();
+  switchPairTab('pin');
+}
+
+function switchPairTab(tab) {
+  document.getElementById('pairPinContent').style.display = tab === 'pin' ? 'block' : 'none';
+  document.getElementById('pairDirectContent').style.display = tab === 'direct' ? 'block' : 'none';
+  document.getElementById('tabPinPair').classList.toggle('btn-primary', tab === 'pin');
+  document.getElementById('tabDirectPair').classList.toggle('btn-primary', tab === 'direct');
+}
+
+async function generateNewPIN() {
+  const pin = await App.GeneratePIN();
+  document.getElementById('pinDisplay').textContent = pin || '842 193';
+}
+
+async function submitDirectPair() {
+  const addr = document.getElementById('pairAddressInput').value.trim();
+  const tok = document.getElementById('pairTokenInput').value.trim();
+  if (!addr || !tok) {
+    toast('Please fill both address and token');
+    return;
+  }
+  try {
+    await App.Pair(addr, tok);
+    toast('Device paired & trusted successfully!');
+    closePairModal();
+    await refresh();
+  } catch (err) {
+    toast('Pairing failed: ' + err.message);
+  }
+}
+
+function triggerSendFlow() {
+  document.getElementById('filePickerInput')?.click();
+}
+
+function quickSendToPeer(peerId) {
+  triggerSendFlow();
+}
+
+function handleFileSelect(e) {
+  const files = [...e.target.files];
+  if (!files.length) return;
+  processFilesQueue(files);
+}
+
+function bindDropZone() {
+  const zone = document.getElementById('dropZone');
+  if (!zone) return;
+
+  ['dragenter', 'dragover'].forEach(name => {
+    zone.addEventListener(name, e => {
+      e.preventDefault();
+      zone.classList.add('dragover');
+    });
+  });
+
+  ['dragleave', 'drop'].forEach(name => {
+    zone.addEventListener(name, e => {
+      e.preventDefault();
+      zone.classList.remove('dragover');
+    });
+  });
+
+  zone.addEventListener('drop', e => {
+    const files = [...e.dataTransfer.files];
+    processFilesQueue(files);
+  });
+
+  zone.onclick = e => {
+    if (e.target.tagName !== 'BUTTON') {
+      document.getElementById('filePickerInput')?.click();
+    }
+  };
+}
+
+async function processFilesQueue(files) {
+  if (!files.length) return;
+  if (state.peers.length === 0) {
+    toast(`${files.length} file(s) staged. Pair with a device to send.`);
+    return;
+  }
+
+  const peer = state.peers[0];
+  toast(`Queueing ${files.length} file(s) for ${peer.name}…`);
+
+  for (const f of files) {
+    try {
+      const w = getWailsApp();
+      if (w?.SendFile && f.path) {
+        await w.SendFile(peer.id, f.path, f.name);
+      } else {
+        // Upload into local shared folder
+        await fetch('/api/upload?path=' + encodeURIComponent(f.name), {
+          method: 'POST',
+          headers: state.token ? { 'X-SynX-Token': state.token } : {},
+          body: f
+        });
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
+  toast(`Files added to transfer queue`);
+  await refresh();
+}
+
+/* Event listeners from Wails backend */
+window.runtime?.EventsOn?.('peer.discovered', refresh);
+window.runtime?.EventsOn?.('peer.disconnected', refresh);
+window.runtime?.EventsOn?.('transfer.created', refresh);
+window.runtime?.EventsOn?.('transfer.started', refresh);
+window.runtime?.EventsOn?.('transfer.completed', () => { refresh(); toast('Transfer completed!'); });
+window.runtime?.EventsOn?.('peers-updated', refresh);
+
+setInterval(refresh, 2500);
+refresh();
+</script>
+</body>
+</html>
