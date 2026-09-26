@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'SynX — High-Velocity LAN Mesh Transfer',
-  description: 'Zero-cloud, high-speed, peer-to-peer LAN file transfer mesh',
+  title: 'SynX — Next-Gen Decentralized LAN File Transfer Mesh',
+  description: 'Ultra-fast, zero-cloud peer-to-peer file streaming over local Wi-Fi and Ethernet. Powered by chunked parallel streams, real-time mesh discovery, and cryptographic SHA-256 verification.',
 };
 
 export default function RootLayout({

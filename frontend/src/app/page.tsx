@@ -205,11 +205,11 @@ export default function Home() {
                 <div>
                   <div className="hero-info-tag">
                     <span className="pulse-beacon" style={{ background: 'var(--cyan)', boxShadow: '0 0 8px var(--cyan)' }}></span>
-                    Next.js Driven • High-Velocity P2P Mesh
+                    ⚡ Zero-Cloud • Decentralized P2P Mesh
                   </div>
-                  <h2>Instant LAN File Broadcast &amp; Streaming</h2>
+                  <h2>Ultra-Fast Local Network File Transfer</h2>
                   <p>
-                    SynX connects directly to any device on your Wi-Fi or Ethernet. Zero middleman servers, 8MB chunked parallel streams, and cryptographic SHA-256 integrity assurance.
+                    SynX establishes direct, high-throughput peer-to-peer pipelines across all devices on your Wi-Fi and Ethernet. Zero external cloud servers, 8MB chunked streaming, and real-time SHA-256 integrity verification.
                   </p>
                   <div className="hero-actions">
                     <button className="btn btn-primary" onClick={() => setCurrentPage('devices')}>
