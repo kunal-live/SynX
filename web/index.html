@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SynX — Local. Direct. Yours.</title>
+<style>
+:root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#f5f4fb;background:#08090d;font-synthesis:none;--bg:#08090d;--panel:#101117;--panel2:#14151d;--line:#252733;--muted:#8c8f9e;--text:#f5f4fb;--violet:#8b5cf6;--violet2:#6d42ef;--cyan:#4de7d5;--green:#65e6a1}*{box-sizing:border-box}body{margin:0;height:100vh;overflow:hidden;background:radial-gradient(700px 420px at 82% -8%,#35206e55,transparent 65%),radial-gradient(500px 360px at 15% 100%,#143d4650,transparent 68%),var(--bg)}button,input{font:inherit}.app{display:grid;grid-template-columns:248px 1fr;height:100vh}.side{border-right:1px solid var(--line);background:rgba(10,11,16,.82);backdrop-filter:blur(20px);padding:20px 14px;display:flex;flex-direction:column}.brand{display:flex;align-items:center;gap:11px;padding:5px 10px 30px;font-size:20px;font-weight:800;letter-spacing:-.03em}.mark{width:35px;height:35px;border-radius:12px;background:conic-gradient(from 210deg,var(--cyan),#6c54ff,var(--violet),var(--cyan));display:grid;place-items:center;box-shadow:0 0 32px #7650ef55;position:relative}.mark:after{content:"";width:17px;height:17px;border:2px solid #fff;border-radius:50%;opacity:.92}.brand small{display:block;color:#777b8b;font-size:9px;font-weight:650;letter-spacing:.16em;text-transform:uppercase;margin-top:2px}.nav{display:grid;gap:6px}.nav button{border:1px solid transparent;background:transparent;color:#8f93a3;text-align:left;padding:11px 12px;border-radius:11px;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:11px}.nav button .ico{width:20px;text-align:center;color:#777b8d}.nav button.active{background:linear-gradient(90deg,#1a1729,#14151d);border-color:#2d2940;color:#fff;box-shadow:inset 2px 0 0 var(--violet)}.nav button.active .ico{color:#b99cff}.nav button:hover:not(.active){background:#11131a;color:#d7d8e1}.spacer{flex:1}.local{border:1px solid #272a36;background:linear-gradient(145deg,#13151d,#0d0f14);border-radius:16px;padding:13px}.local-top{display:flex;align-items:center;gap:8px;font-size:11px;color:#9b9eac}.dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 12px #65e6a188}.local b{display:block;font-size:13px;margin:8px 0 4px}.local span{font-size:10px;color:#777b8b;word-break:break-all}.main{display:flex;flex-direction:column;min-width:0}.top{height:72px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 30px;background:#0b0c11aa;backdrop-filter:blur(16px)}.crumb{display:flex;align-items:center;gap:10px}.crumb h1{font-size:17px;margin:0;letter-spacing:-.02em}.eyebrow{font-size:10px;color:#747887;text-transform:uppercase;letter-spacing:.14em}.status{display:flex;align-items:center;gap:9px;color:#8d91a0;font-size:11px}.status .dot{width:6px;height:6px}.content{padding:28px 30px;overflow:auto}.hero{min-height:220px;border:1px solid #29253b;border-radius:24px;padding:28px;position:relative;overflow:hidden;background:linear-gradient(135deg,#151224 0%,#101117 54%,#0f1718 100%);box-shadow:0 22px 70px #0005}.hero:before{content:"";position:absolute;width:280px;height:280px;right:-50px;top:-120px;border-radius:50%;background:#8654ff2e;filter:blur(5px)}.hero:after{content:"";position:absolute;width:190px;height:190px;right:70px;bottom:-120px;border-radius:50%;background:#4de7d518;filter:blur(2px)}.hero-inner{position:relative;z-index:1;max-width:720px}.hero .kicker{display:inline-flex;align-items:center;gap:7px;border:1px solid #38304f;background:#1a1627;border-radius:999px;padding:6px 9px;color:#c4b5fd;font-size:10px}.hero h2{font-size:35px;line-height:1.04;letter-spacing:-.055em;margin:18px 0 10px;max-width:620px}.hero p{color:#999cac;margin:0;line-height:1.65;font-size:13px;max-width:600px}.actions{display:flex;gap:9px;margin-top:20px}.btn{border:1px solid #303341;background:#171922;color:#ececf3;border-radius:10px;padding:10px 13px;cursor:pointer;font-size:12px;transition:.18s}.btn:hover{transform:translateY(-1px);border-color:#45485a;background:#1d202a}.btn.primary{background:linear-gradient(135deg,#8b5cf6,#6940e9);border-color:#9a72ff;box-shadow:0 8px 26px #7146e955}.grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(300px,.75fr);gap:18px;margin-top:18px}.card{background:rgba(16,17,23,.86);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 10px 35px #0002}.card h2{font-size:13px;margin:0 0 14px;letter-spacing:-.01em}.card-head{display:flex;justify-content:space-between;align-items:center}.subtle{color:#777b8a;font-size:10px}.peer{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #22252f}.peer:last-child{border-bottom:0}.avatar{width:38px;height:38px;border-radius:12px;background:linear-gradient(145deg,#202230,#151720);border:1px solid #303341;display:grid;place-items:center;font-size:12px;color:#bba9ff}.peer-main{flex:1;min-width:0}.peer-main b{display:block;font-size:12px}.peer-main span{display:block;color:#777b8b;font-size:10px;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pill{font-size:9px;padding:5px 8px;border-radius:999px;background:#13241d;color:var(--green);border:1px solid #1e3a2d}.drop{border:1px dashed #393d4c;border-radius:16px;padding:25px 15px;text-align:center;color:#777c8c;background:#0c0e13;transition:.2s}.drop strong{display:block;color:#dfe0e8;font-size:12px;margin-bottom:5px}.drop span{font-size:10px}.drop.drag{border-color:#8b5cf6;color:#c7b9ff;background:#171226;box-shadow:0 0 35px #7650ef18}.transfer{padding:14px 0;border-bottom:1px solid #22252f}.transfer:last-child{border-bottom:0}.transfer-head{display:flex;justify-content:space-between;font-size:11px}.transfer-meta{display:flex;justify-content:space-between;color:#777b8a;font-size:9px;margin-top:6px}.progress{height:5px;background:#242733;border-radius:99px;overflow:hidden;margin-top:9px}.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--violet),var(--cyan));border-radius:99px}.empty{color:#737888;font-size:11px;padding:14px 0}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}.stat{padding:14px;border:1px solid var(--line);border-radius:15px;background:#0f1016}.stat span{display:block;color:#747887;font-size:9px;text-transform:uppercase;letter-spacing:.1em}.stat b{display:block;font-size:20px;margin-top:6px;letter-spacing:-.04em}.settings{max-width:760px}.field{margin-bottom:15px}.field label{display:block;font-size:10px;color:#858998;margin-bottom:7px}.field input{width:100%;background:#0c0e14;border:1px solid #2a2d38;border-radius:10px;padding:10px;color:#e8e9ef;outline:none}.field input:focus{border-color:#7250d9;box-shadow:0 0 0 3px #7650ef12}.row{display:flex;gap:8px}.row input{flex:1}.toast{position:fixed;right:24px;bottom:24px;background:#171922ee;border:1px solid #383b48;border-radius:12px;padding:11px 14px;font-size:11px;box-shadow:0 18px 45px #0009;display:none;backdrop-filter:blur(12px)}.page-note{color:#7e8291;font-size:11px;margin:-5px 0 18px}.device-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}.device-card{border:1px solid #272a35;border-radius:16px;padding:16px;background:linear-gradient(145deg,#12141c,#0e1015)}.device-card .device-head{display:flex;gap:10px;align-items:center}.device-card .big-avatar{width:42px;height:42px;border-radius:13px;background:#1a1c26;display:grid;place-items:center;color:#b9a4ff;border:1px solid #303340}.device-card b{font-size:12px}.device-card small{display:block;color:#747888;font-size:9px;margin-top:3px}.device-card .device-foot{display:flex;align-items:center;justify-content:space-between;margin-top:18px}.mini{font-size:9px;color:#858998}.send{border:1px solid #493c72;background:#1b1630;color:#cfc2ff;border-radius:8px;padding:7px 9px;font-size:9px;cursor:pointer}.send:hover{background:#251d3e}.section-space{margin-top:18px}@media(max-width:900px){.app{grid-template-columns:72px 1fr}.brand{justify-content:center;padding-bottom:25px}.brand div:last-child,.brand small,.nav button span,.local{display:none}.nav button{justify-content:center}.grid{grid-template-columns:1fr}.hero h2{font-size:29px}.content{padding:20px}.top{padding:0 20px}}
+</style></head>
+<body>
+<div class="app">
+<aside class="side"><div class="brand"><div class="mark"></div><div>SynX<small>local • direct • yours</small></div></div>
+<div class="nav"><button class="active" data-page="overview"><span class="ico">◈</span><span>Overview</span></button><button data-page="peers"><span class="ico">⌘</span><span>Devices</span></button><button data-page="transfers"><span class="ico">↗</span><span>Transfer center</span></button><button data-page="settings"><span class="ico">⚙</span><span>Settings</span></button></div>
+<div class="spacer"></div><div class="local"><div class="local-top"><i class="dot"></i> This device</div><b id="localName">SynX Node</b><span id="localAddr">Starting…</span><br><span id="localDir">~/SynX</span></div></aside>
+<main class="main"><header class="top"><div class="crumb"><div><div class="eyebrow">SynX workspace</div><h1 id="pageTitle">Overview</h1></div></div><div class="status"><i class="dot"></i><span id="status">Discovering peers…</span></div></header><section class="content" id="content"></section></main></div><div class="toast" id="toast"></div>
+<script>
+let state={peers:[],transfers:[],sharedDir:'',address:'',token:''},page='overview';
+const getWailsApp = () => window.go?.app?.App || window.go?.main?.App;
+const App = {
+  async GetState() {
+    const w = getWailsApp();
+    if (w?.GetState) return await w.GetState();
+    try {
+      const cfg = window.__SYNX_LOCAL__ || {};
+      const token = cfg.token || localStorage.getItem('synx_token') || state.token || '';
+      const res = await fetch('/api/state', { headers: token ? { 'X-SynX-Token': token } : {} });
+      if (res.ok) return await res.json();
+    } catch (_) {}
+    return {
+      name: 'SynX',
+      version: '1.0.0',
+      platform: navigator.platform || 'windows',
+      sharedDir: (window.__SYNX_LOCAL__ && window.__SYNX_LOCAL__.dir) || '~/SynX',
+      token: (window.__SYNX_LOCAL__ && window.__SYNX_LOCAL__.token) || 'local',
+      address: window.location.host || 'localhost:8787',
+      peers: [],
+      transfers: []
+    };
+  },
+  async ChooseFolder() {
+    const w = getWailsApp();
+    if (w?.ChooseFolder) return await w.ChooseFolder();
+    return prompt('Enter shared folder path:', state.sharedDir || '~/SynX') || '';
+  },
+  async SetSharedDir(dir) {
+    const w = getWailsApp();
+    if (w?.SetSharedDir) return await w.SetSharedDir(dir);
+    try {
+      const res = await fetch('/api/set-dir', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ dir })
+      });
+      if (!res.ok) throw new Error('Failed to update shared folder');
+    } catch (e) {
+      state.sharedDir = dir;
+    }
+  },
+  async Pair(address, token) {
+    const w = getWailsApp();
+    if (w?.Pair) return await w.Pair(address, token);
+    const res = await fetch('/api/pair-peer', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ address, token })
+    });
+    if (!res.ok) {
+      const errText = await res.text();
+      throw new Error(errText || 'Pairing failed');
+    }
+  },
+  async GeneratePIN() {
+    const w = getWailsApp();
+    if (w?.GeneratePairingPIN) return await w.GeneratePairingPIN();
+    const res = await fetch('/api/v1/pair/start');
+    if (res.ok) {
+      const data = await res.json();
+      return data.pin;
+    }
+    return '';
+  }
+};
+const esc=s=>String(s??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+function toast(t){let e=document.getElementById('toast');e.textContent=t;e.style.display='block';setTimeout(()=>e.style.display='none',2200)}
+async function refresh(){try{state=await App.GetState();document.getElementById('localAddr').textContent=state.address;document.getElementById('localDir').textContent=state.sharedDir;document.getElementById('status').textContent=`${state.peers.length} peer${state.peers.length===1?'':'s'} nearby`;render()}catch(e){toast(String(e))}}
+function render(){document.getElementById('pageTitle').textContent=page==='peers'?'Devices':page==='transfers'?'Transfer center':page[0].toUpperCase()+page.slice(1);document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===page));let c=document.getElementById('content');if(page==='overview')c.innerHTML=overview();if(page==='peers')c.innerHTML=peers();if(page==='transfers')c.innerHTML=transfers();if(page==='settings')c.innerHTML=settings();bindDrop()}
+function overview(){return `<div class="hero"><div class="hero-inner"><div class="kicker"><i class="dot"></i> LAN network ready</div><h2>Move files at the speed of your network.</h2><p>SynX connects your devices directly. No cloud middleman, no upload limits, no account — just a fast private lane between machines you own.</p><div class="actions"><button class="btn primary" onclick="page='peers';render()">Choose a device →</button><button class="btn" onclick="chooseFolder()">Set shared folder</button></div></div></div><div class="stats"><div class="stat"><span>Nearby</span><b>${state.peers.length}</b></div><div class="stat"><span>Transfers</span><b>${state.transfers.length}</b></div><div class="stat"><span>Mode</span><b>LAN</b></div></div><div class="grid"><div class="card"><div class="card-head"><h2>Recent transfers</h2><span class="subtle">latest activity</span></div>${transferRows(4)}</div><div class="card"><div class="card-head"><h2>Nearby devices</h2><span class="subtle">auto discovery</span></div>${peerRows(4)}</div></div><div class="card section-space"><div class="card-head"><h2>Drop zone</h2><span class="subtle">drag & drop</span></div><div id="drop" class="drop"><strong>Drop files anywhere in this zone</strong><span>They’ll be staged for your next transfer.</span></div></div>`}
+function peerRows(n){let a=state.peers.slice(0,n);if(!a.length)return '<div class="empty">No peers discovered yet. Keep SynX open on another device on the same network.</div>';return a.map(p=>`<div class="peer"><div class="avatar">${p.platform==='windows'?'W':p.platform==='darwin'?'M':'L'}</div><div class="peer-main"><b>${esc(p.name||'SynX peer')}</b><span>${esc(p.address)} · ${esc(p.platform||'unknown')}</span></div><span class="pill">online</span></div>`).join('')}
+function peers(){return `<div class="page-note">Devices detected on your local network. Pair once, then send without leaving SynX.</div><div class="device-grid">${state.peers.length?state.peers.map(p=>`<div class="device-card"><div class="device-head"><div class="big-avatar">${p.platform==='windows'?'W':p.platform==='darwin'?'M':'L'}</div><div><b>${esc(p.name||'SynX peer')}</b><small>${esc(p.platform||'unknown')} · ${esc(p.address)}</small></div></div><div class="device-foot"><span class="mini">● available now</span><button class="send" onclick="sendToPeer('${esc(p.id)}')">Send files →</button></div></div>`).join(''):'<div class="card"><div class="empty">No nearby devices yet.</div></div>'}</div><div class="actions"><button class="btn primary" onclick="pair()">+ Pair by address</button><button class="btn" onclick="showPIN()">Show Pairing PIN</button></div>`}
+function transferRows(n){let a=state.transfers.slice(-n).reverse();if(!a.length)return '<div class="empty">No transfers yet.</div>';return a.map(t=>`<div class="transfer"><div class="transfer-head"><span>${esc(t.name)}</span><span>${Math.round(t.progress||0)}%</span></div><div class="progress"><i style="width:${Math.min(100,t.progress||0)}%"></i></div><div class="transfer-meta"><span>${esc(t.status||'queued')}</span><span>${t.speed||'—'}</span></div></div>`).join('')}
+function transfers(){return `<div class="page-note">Everything moving through SynX, in one place.</div><div class="card"><div class="card-head"><h2>Transfer activity</h2><span class="subtle">live queue</span></div>${transferRows(100)}</div>`}
+function settings(){return `<div class="card settings"><div class="card-head"><h2>Settings</h2><span class="subtle">local preferences</span></div><div class="field"><label>Shared folder</label><div class="row"><input id="folder" value="${esc(state.sharedDir)}"><button class="btn" onclick="chooseFolder()">Browse</button></div></div><div class="field"><label>Pairing token</label><input value="${esc(state.token)}" readonly></div><div class="field"><label>Local address</label><input value="${esc(state.address)}" readonly></div><button class="btn primary" onclick="saveFolder()">Save settings</button></div>`}
+async function chooseFolder(){let d=await App.ChooseFolder();if(d){await refresh();toast('Shared folder updated')}}
+async function saveFolder(){let d=document.getElementById('folder').value.trim();try{await App.SetSharedDir(d);await refresh();toast('Settings saved')}catch(e){toast(String(e))}}
+async function pair(){let address=prompt('Peer address, e.g. 192.168.1.10:8787');if(!address)return;let token=prompt('Peer pairing token');if(!token)return;try{await App.Pair(address,token);await refresh();toast('Peer paired')}catch(e){toast(String(e))}}
+async function showPIN(){let pin=await App.GeneratePIN();if(pin)prompt('Your SynX Pairing PIN (valid 5 minutes):', pin);else toast('Unable to generate PIN')}
+async function sendToPeer(peerId){let path=prompt('Enter path of file to send:');if(!path)return;try{let w=getWailsApp();if(w?.SendFile){await w.SendFile(peerId, path, '');toast('Transfer queued');await refresh();}else{toast('SendFile available in desktop app');}}catch(e){toast(String(e));}}
+function bindDrop(){let d=document.getElementById('drop');if(!d)return;['dragenter','dragover'].forEach(x=>d.addEventListener(x,e=>{e.preventDefault();d.classList.add('drag')}));['dragleave','drop'].forEach(x=>d.addEventListener(x,e=>{e.preventDefault();d.classList.remove('drag')}));d.addEventListener('drop',async e=>{let files=[...e.dataTransfer.files];if(!files.length)return;if(state.peers.length>0){let peer=state.peers[0];toast(`Staging ${files.length} file(s) for ${peer.name}...`);for(let f of files){try{let w=getWailsApp();if(w?.SendFile){await w.SendFile(peer.id,f.path||f.name,f.name);}else{await fetch('/api/upload?path='+encodeURIComponent(f.name),{method:'POST',headers:state.token?{'X-SynX-Token':state.token}:{},body:f});}}catch(err){toast(`Transfer error: ${err.message}`);}}toast(`Files queued`);await refresh();}else{toast(`${files.length} file(s) ready. Pair a device to transfer!`);}})}
+document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>{page=b.dataset.page;render()});
+window.runtime?.EventsOn?.('peer.discovered',refresh);
+window.runtime?.EventsOn?.('peer.disconnected',refresh);
+window.runtime?.EventsOn?.('transfer.started',refresh);
+window.runtime?.EventsOn?.('transfer.completed',()=>{refresh();toast('Transfer completed!');});
+window.runtime?.EventsOn?.('peers-updated',refresh);
+setInterval(refresh,3000);refresh();
+</script></body></html>

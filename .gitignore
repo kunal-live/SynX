@@ -1,0 +1,31 @@
+# Binaries and build artifacts
+build/bin/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Database files
+*.db
+*.db-wal
+*.db-shm
+
+# Temporary transfer files
+*.part
+*.synx.part
+
+# Test files
+testshare/
+
+# OS files
+Thumbs.db
+ehthumbs.db
+[Dd]esktop.ini
+.DS_Store
+
+# Editor directories
+.idea/
+.vscode/
+*.swp
+*.swo
