@@ -19,17 +19,18 @@ const (
 )
 
 type Peer struct {
-	ID        string     `json:"id"`
-	Name      string     `json:"name"`
-	Address   string     `json:"address"`
-	Port      int        `json:"port"`
-	Platform  string     `json:"platform"`
-	Version   string     `json:"version"`
-	Token     string     `json:"token"`
-	PublicKey string     `json:"public_key"`
-	LastSeen  time.Time  `json:"last_seen"`
-	Status    PeerStatus `json:"status"`
-	Trusted   bool       `json:"trusted"`
+	ID           string     `json:"id"`
+	Name         string     `json:"name"`
+	Address      string     `json:"address"`
+	Port         int        `json:"port"`
+	Platform     string     `json:"platform"`
+	Version      string     `json:"version"`
+	Token        string     `json:"token"`
+	PublicKey    string     `json:"public_key"`
+	Capabilities []string   `json:"capabilities"`
+	LastSeen     time.Time  `json:"last_seen"`
+	Status       PeerStatus `json:"status"`
+	Trusted      bool       `json:"trusted"`
 }
 
 type Manager struct {
@@ -142,6 +143,9 @@ func (m *Manager) AddOrUpdate(p Peer) {
 	}
 	if p.PublicKey != "" {
 		existing.PublicKey = p.PublicKey
+	}
+	if len(p.Capabilities) > 0 {
+		existing.Capabilities = p.Capabilities
 	}
 	if p.Trusted {
 		existing.Trusted = true

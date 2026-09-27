@@ -9,6 +9,7 @@ interface DevicesViewProps {
   onOpenPairModal: () => void;
   onShowPINModal: () => void;
   onSendToPeer: (peerId: string) => void;
+  onOpenTerminal?: (peerId: string) => void;
 }
 
 function getPlatformIcon(platform?: string) {
@@ -50,17 +51,18 @@ export const DevicesView: React.FC<DevicesViewProps> = ({
   peers,
   onOpenPairModal,
   onShowPINModal,
-  onSendToPeer
+  onSendToPeer,
+  onOpenTerminal
 }) => {
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
         <div>
           <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '20px', color: 'var(--text-pure)', fontWeight: 800 }}>
-            Discovered Mesh Nodes
+            Discovered Developer Mesh Nodes
           </h3>
           <p style={{ fontSize: '13px', color: 'var(--text-med)', marginTop: '2px' }}>
-            All active SynX nodes auto-discovered on UDP port 8788.
+            Workstations, servers, and devices running SynX with capability advertisement.
           </p>
         </div>
         <div style={{ display: 'flex', gap: '12px' }}>
@@ -87,9 +89,9 @@ export const DevicesView: React.FC<DevicesViewProps> = ({
       <div className="hero-mesh-card" style={{ marginBottom: '24px', padding: '24px 28px' }}>
         <div>
           <div className="hero-info-tag">Mesh Topology Status</div>
-          <h2 style={{ fontSize: '24px' }}>Local Peer Mesh Network</h2>
+          <h2 style={{ fontSize: '24px' }}>Local Developer Mesh Network</h2>
           <p style={{ marginBottom: 0 }}>
-            Devices on the same network automatically establish bidirectional trust relationships using Ed25519 public keys and fast local sockets.
+            Devices on the same network automatically discover each other via UDP multicast and establish authenticated sessions with Ed25519 public keys.
           </p>
         </div>
         <RadarScanner peers={peers} />
@@ -114,33 +116,66 @@ export const DevicesView: React.FC<DevicesViewProps> = ({
               <line x1="8" y1="21" x2="16" y2="21" />
               <line x1="12" y1="17" x2="12" y2="21" />
             </svg>
-            <div>No peers detected on local network.</div>
+            <div>No peer nodes detected on local network.</div>
             <small style={{ color: 'var(--text-dim)', marginTop: '-4px' }}>
-              Run SynX on another device connected to the same Wi-Fi or router.
+              Run SynX on another developer workstation connected to the same Wi-Fi or router.
             </small>
           </div>
         ) : (
-          peers.map((p) => (
-            <div key={p.id} className="device-item-row">
-              <div className="device-avatar-box">
-                {getPlatformIcon(p.platform)}
-              </div>
-              <div className="device-details">
-                <div className="device-name-line">
-                  {p.name || 'SynX Device'}
-                  <span className={`badge-tag ${p.trusted ? 'badge-tag-trusted' : 'badge-tag-online'}`}>
-                    {p.trusted ? 'Trusted' : 'Discovered'}
-                  </span>
+          peers.map((p) => {
+            const caps = p.capabilities && p.capabilities.length > 0 ? p.capabilities : ['terminal', 'command', 'files', 'clipboard'];
+            return (
+              <div key={p.id} className="device-item-row" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 20px', borderBottom: '1px solid var(--border-dim)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                  <div className="device-avatar-box">
+                    {getPlatformIcon(p.platform)}
+                  </div>
+                  <div className="device-details">
+                    <div className="device-name-line" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <span style={{ fontWeight: 800, fontSize: '15px', color: 'var(--text-pure)' }}>{p.name || 'SynX Device'}</span>
+                      <span className={`badge-tag ${p.trusted ? 'badge-tag-trusted' : 'badge-tag-online'}`}>
+                        {p.trusted ? 'Trusted' : 'Discovered'}
+                      </span>
+                    </div>
+                    <div className="device-address-line" style={{ fontSize: '12px', color: 'var(--text-med)', marginTop: '2px' }}>
+                      {p.address} • {p.platform || 'LAN Node'} {p.version ? `• ${p.version}` : ''}
+                    </div>
+
+                    {/* Capabilities Tags */}
+                    <div style={{ display: 'flex', gap: '6px', marginTop: '6px' }}>
+                      {caps.map((c) => (
+                        <span
+                          key={c}
+                          style={{
+                            fontSize: '10px',
+                            fontFamily: 'var(--font-mono)',
+                            padding: '1px 6px',
+                            borderRadius: '4px',
+                            background: 'var(--bg-glass-pill)',
+                            border: '1px solid var(--border-dim)',
+                            color: c === 'terminal' ? 'var(--cyan)' : c === 'command' ? 'var(--emerald)' : 'var(--text-dim)'
+                          }}
+                        >
+                          ✓ {c}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-                <div className="device-address-line">
-                  {p.address} • {p.platform || 'LAN Node'}
+
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  {onOpenTerminal && (
+                    <button className="btn btn-sm" onClick={() => onOpenTerminal(p.id)} style={{ borderColor: 'var(--cyan)', color: 'var(--cyan)' }}>
+                      Terminal
+                    </button>
+                  )}
+                  <button className="btn btn-sm btn-primary" onClick={() => onSendToPeer(p.id)}>
+                    Send Files
+                  </button>
                 </div>
               </div>
-              <button className="btn btn-sm btn-primary" onClick={() => onSendToPeer(p.id)}>
-                Send
-              </button>
-            </div>
-          ))
+            );
+          })
         )}
       </div>
     </div>

@@ -1,11 +1,25 @@
 export interface Peer {
   id: string;
+  device_id?: string;
   name: string;
+  device_name?: string;
   address: string;
+  port?: number;
   platform?: string;
+  version?: string;
+  capabilities?: string[];
+  public_key?: string;
   trusted?: boolean;
   status?: string;
   last_seen?: number;
+}
+
+export interface TerminalSession {
+  session_id: string;
+  cols: number;
+  rows: number;
+  created_at: number;
+  shell?: string;
 }
 
 export interface Transfer {

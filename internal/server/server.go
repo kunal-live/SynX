@@ -125,6 +125,9 @@ func (s *Server) Register(mux *http.ServeMux) {
 	mux.HandleFunc("/api/set-dir", s.auth(s.legacySetDir))
 	mux.HandleFunc("/api/pair-peer", s.auth(s.legacyPairPeer))
 
+	// Developer Platform API (Section 10 & 15)
+	s.registerDeveloperAPI(mux)
+
 	// Frontend Static UI
 	mux.HandleFunc("/", s.index)
 }

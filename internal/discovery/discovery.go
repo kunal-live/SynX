@@ -13,62 +13,99 @@ import (
 	"synx/internal/peers"
 )
 
+// AnnouncePacket maintains compatibility with legacy formats while supporting the new schema.
 type AnnouncePacket struct {
-	Protocol  string `json:"protocol"`
-	Version   int    `json:"version"`
-	DeviceID  string `json:"device_id"`
-	Name      string `json:"name"`
-	Platform  string `json:"platform"`
-	Port      int    `json:"port"`
-	Token     string `json:"token"`
-	PublicKey string `json:"public_key"`
+	Protocol     string   `json:"protocol"`
+	Version      int      `json:"version"`
+	DeviceID     string   `json:"device_id"`
+	Name         string   `json:"name,omitempty"`
+	DeviceName   string   `json:"device_name,omitempty"`
+	Platform     string   `json:"platform"`
+	Port         int      `json:"port"`
+	Token        string   `json:"token,omitempty"`
+	PublicKey    string   `json:"public_key"`
+	Capabilities []string `json:"capabilities,omitempty"`
+	Timestamp    int64    `json:"timestamp,omitempty"`
 }
 
 type Discovery struct {
-	port       int
-	httpPort   int
-	id         *identity.Identity
-	token      string
-	peerMgr    *peers.Manager
-	listener   *net.UDPConn
-	stopCh     chan struct{}
-	running    bool
-	mu         sync.Mutex
+	port        int
+	httpPort    int
+	id          *identity.Identity
+	token       string
+	peerMgr     *peers.Manager
+	broadcaster *Broadcaster
+	listener    *Listener
+	mu          sync.Mutex
+	running     bool
 }
 
 func New(discoveryPort, httpPort int, id *identity.Identity, token string, peerMgr *peers.Manager) *Discovery {
-	return &Discovery{
+	d := &Discovery{
 		port:     discoveryPort,
 		httpPort: httpPort,
 		id:       id,
 		token:    token,
 		peerMgr:  peerMgr,
-		stopCh:   make(chan struct{}),
 	}
+
+	d.broadcaster = NewBroadcaster(discoveryPort, 2500*time.Millisecond, func() *Message {
+		summary := id.Summary()
+		return NewHelloMessage(
+			summary["device_id"],
+			summary["device_name"],
+			runtime.GOOS,
+			httpPort,
+			id.Capabilities,
+			summary["public_key"],
+			token,
+		)
+	})
+
+	d.listener = NewListener(discoveryPort, id.DeviceID, func(msg *Message, remoteIP net.IP) {
+		name := msg.DeviceName
+		if name == "" {
+			name = "SynX Node"
+		}
+		port := msg.Port
+		if port == 0 {
+			port = httpPort
+		}
+
+		peerHost := remoteIP.String()
+		peerMgr.AddOrUpdate(peers.Peer{
+			ID:           msg.DeviceID,
+			Name:         name,
+			Address:      fmt.Sprintf("%s:%d", peerHost, port),
+			Port:         port,
+			Platform:     msg.Platform,
+			Version:      fmt.Sprintf("v%d", msg.ProtocolVersion),
+			Token:        msg.Token,
+			PublicKey:    msg.PublicKey,
+			Capabilities: msg.Capabilities,
+			Status:       peers.StatusReachable,
+		})
+	})
+
+	return d
 }
 
 func (d *Discovery) Start() error {
 	d.mu.Lock()
+	defer d.mu.Unlock()
+
 	if d.running {
-		d.mu.Unlock()
 		return nil
 	}
 	d.running = true
-	d.mu.Unlock()
 
-	addr, err := net.ResolveUDPAddr("udp4", fmt.Sprintf("0.0.0.0:%d", d.port))
-	if err != nil {
-		return err
+	if err := d.listener.Start(); err != nil {
+		observability.Warn("Discovery listener failed to bind UDP port %d: %v. Running in broadcast-only mode.", d.port, err)
 	}
 
-	conn, err := net.ListenUDP("udp4", addr)
-	if err != nil {
-		return fmt.Errorf("failed to bind UDP discovery port: %w", err)
+	if err := d.broadcaster.Start(); err != nil {
+		observability.Warn("Discovery broadcaster failed to start: %v", err)
 	}
-	d.listener = conn
-
-	go d.listenLoop()
-	go d.announceLoop()
 
 	observability.Info("Peer discovery started on UDP port %d", d.port)
 	return nil
@@ -76,113 +113,29 @@ func (d *Discovery) Start() error {
 
 func (d *Discovery) Stop() {
 	d.mu.Lock()
+	defer d.mu.Unlock()
+
 	if !d.running {
-		d.mu.Unlock()
 		return
 	}
 	d.running = false
-	close(d.stopCh)
+
+	if d.broadcaster != nil {
+		d.broadcaster.Stop()
+	}
 	if d.listener != nil {
-		_ = d.listener.Close()
-	}
-	d.mu.Unlock()
-}
-
-func (d *Discovery) announceLoop() {
-	dst, err := net.ResolveUDPAddr("udp4", fmt.Sprintf("255.255.255.255:%d", d.port))
-	if err != nil {
-		return
-	}
-
-	outConn, err := net.DialUDP("udp4", nil, dst)
-	if err != nil {
-		return
-	}
-	defer outConn.Close()
-
-	ticker := time.NewTicker(2500 * time.Millisecond)
-	defer ticker.Stop()
-
-	// Initial immediate ping
-	d.broadcast(outConn)
-
-	for {
-		select {
-		case <-d.stopCh:
-			return
-		case <-ticker.C:
-			d.broadcast(outConn)
-		}
+		d.listener.Stop()
 	}
 }
 
-func (d *Discovery) broadcast(conn *net.UDPConn) {
-	summary := d.id.Summary()
-	pkt := AnnouncePacket{
-		Protocol:  "synx",
-		Version:   1,
-		DeviceID:  summary["device_id"],
-		Name:      summary["device_name"],
-		Platform:  runtime.GOOS,
-		Port:      d.httpPort,
-		Token:     d.token,
-		PublicKey: summary["public_key"],
+// DecodeAnnouncePacket parses either a legacy or new discovery payload.
+func DecodeAnnouncePacket(data []byte) (*AnnouncePacket, error) {
+	var pkt AnnouncePacket
+	if err := json.Unmarshal(data, &pkt); err != nil {
+		return nil, err
 	}
-
-	data, err := json.Marshal(pkt)
-	if err != nil {
-		return
+	if pkt.Name == "" && pkt.DeviceName != "" {
+		pkt.Name = pkt.DeviceName
 	}
-
-	_, _ = conn.Write(data)
-}
-
-func (d *Discovery) listenLoop() {
-	buf := make([]byte, 4096)
-	for {
-		select {
-		case <-d.stopCh:
-			return
-		default:
-		}
-
-		n, remoteAddr, err := d.listener.ReadFromUDP(buf)
-		if err != nil {
-			select {
-			case <-d.stopCh:
-				return
-			default:
-				time.Sleep(100 * time.Millisecond)
-				continue
-			}
-		}
-
-		var pkt AnnouncePacket
-		if err := json.Unmarshal(buf[:n], &pkt); err != nil {
-			continue
-		}
-
-		// Ignore packets from self
-		if pkt.Protocol != "synx" || pkt.DeviceID == d.id.DeviceID {
-			continue
-		}
-
-		peerHost := remoteAddr.IP.String()
-		port := pkt.Port
-		if port == 0 {
-			port = 8787
-		}
-
-		d.peerMgr.AddOrUpdate(peers.Peer{
-			ID:        pkt.DeviceID,
-			Name:      pkt.Name,
-			Address:   fmt.Sprintf("%s:%d", peerHost, port),
-			Port:      port,
-			Platform:  pkt.Platform,
-			Version:   fmt.Sprintf("v%d", pkt.Version),
-			Token:     pkt.Token,
-			PublicKey: pkt.PublicKey,
-			Status:    peers.StatusReachable,
-		})
-	}
+	return &pkt, nil
 }

@@ -11,48 +11,72 @@ import (
 	"sync"
 )
 
+// Identity represents the persistent device identity for this SynX node.
 type Identity struct {
-	DeviceID   string `json:"device_id"`
-	DeviceName string `json:"device_name"`
-	Platform   string `json:"platform"`
-	Version    string `json:"version"`
-	PublicKey  string `json:"public_key"`
-	privateKey ed25519.PrivateKey
-	mu         sync.RWMutex
+	DeviceID     string   `json:"device_id"`
+	DeviceName   string   `json:"device_name"`
+	Platform     string   `json:"platform"`
+	Architecture string   `json:"architecture"`
+	Version      string   `json:"version"`
+	PublicKey    string   `json:"public_key"`
+	Capabilities []string `json:"capabilities"`
+	privateKey   ed25519.PrivateKey
+	mu           sync.RWMutex
 }
 
 type persistedIdentity struct {
-	DeviceID   string `json:"device_id"`
-	DeviceName string `json:"device_name"`
-	Platform   string `json:"platform"`
-	Version    string `json:"version"`
-	PublicKey  string `json:"public_key"`
-	PrivateKey string `json:"private_key"`
+	DeviceID     string   `json:"device_id"`
+	DeviceName   string   `json:"device_name"`
+	Platform     string   `json:"platform"`
+	Architecture string   `json:"architecture"`
+	Version      string   `json:"version"`
+	PublicKey    string   `json:"public_key"`
+	PrivateKey   string   `json:"private_key"`
+	Capabilities []string `json:"capabilities,omitempty"`
 }
 
+// DefaultCapabilities returns the core set of developer capabilities supported by this node.
+func DefaultCapabilities() []string {
+	return []string{
+		"terminal",
+		"command",
+		"files",
+		"clipboard",
+		"events",
+	}
+}
+
+// LoadOrCreate initializes the device identity from disk, or generates a fresh persistent identity.
 func LoadOrCreate(dataDir, preferredName string) (*Identity, error) {
 	_ = os.MkdirAll(dataDir, 0755)
 	idPath := filepath.Join(dataDir, "identity.json")
 
+	caps := DefaultCapabilities()
+
 	if data, err := os.ReadFile(idPath); err == nil {
 		var p persistedIdentity
 		if err := json.Unmarshal(data, &p); err == nil && p.DeviceID != "" && p.PrivateKey != "" {
-			privBytes, _ := hex.DecodeString(p.PrivateKey)
-			if len(privBytes) == ed25519.PrivateKeySize {
+			priv, err := HexToPrivateKey(p.PrivateKey)
+			if err == nil {
+				if len(p.Capabilities) > 0 {
+					caps = p.Capabilities
+				}
 				return &Identity{
-					DeviceID:   p.DeviceID,
-					DeviceName: p.DeviceName,
-					Platform:   runtime.GOOS,
-					Version:    "1.0.0",
-					PublicKey:  p.PublicKey,
-					privateKey: ed25519.PrivateKey(privBytes),
+					DeviceID:     p.DeviceID,
+					DeviceName:   p.DeviceName,
+					Platform:     runtime.GOOS,
+					Architecture: runtime.GOARCH,
+					Version:      "1.0.0",
+					PublicKey:    p.PublicKey,
+					Capabilities: caps,
+					privateKey:   priv,
 				}, nil
 			}
 		}
 	}
 
-	// Generate new Ed25519 keypair and persistent device ID
-	pub, priv, err := ed25519.GenerateKey(rand.Reader)
+	// Generate new Ed25519 keypair and persistent random device ID
+	pub, priv, err := GenerateKeyPair()
 	if err != nil {
 		return nil, err
 	}
@@ -72,21 +96,25 @@ func LoadOrCreate(dataDir, preferredName string) (*Identity, error) {
 	}
 
 	id := &Identity{
-		DeviceID:   deviceID,
-		DeviceName: name,
-		Platform:   runtime.GOOS,
-		Version:    "1.0.0",
-		PublicKey:  hex.EncodeToString(pub),
-		privateKey: priv,
+		DeviceID:     deviceID,
+		DeviceName:   name,
+		Platform:     runtime.GOOS,
+		Architecture: runtime.GOARCH,
+		Version:      "1.0.0",
+		PublicKey:    PublicKeyToHex(pub),
+		Capabilities: caps,
+		privateKey:   priv,
 	}
 
 	p := persistedIdentity{
-		DeviceID:   id.DeviceID,
-		DeviceName: id.DeviceName,
-		Platform:   id.Platform,
-		Version:    id.Version,
-		PublicKey:  id.PublicKey,
-		PrivateKey: hex.EncodeToString(priv),
+		DeviceID:     id.DeviceID,
+		DeviceName:   id.DeviceName,
+		Platform:     id.Platform,
+		Architecture: id.Architecture,
+		Version:      id.Version,
+		PublicKey:    id.PublicKey,
+		PrivateKey:   PrivateKeyToHex(priv),
+		Capabilities: id.Capabilities,
 	}
 
 	if encoded, err := json.MarshalIndent(p, "", "  "); err == nil {
@@ -96,34 +124,44 @@ func LoadOrCreate(dataDir, preferredName string) (*Identity, error) {
 	return id, nil
 }
 
+// Sign signs an arbitrary byte payload using the node's private key.
 func (id *Identity) Sign(message []byte) []byte {
 	id.mu.RLock()
 	defer id.mu.RUnlock()
-	return ed25519.Sign(id.privateKey, message)
+	return Sign(id.privateKey, message)
 }
 
-func Verify(publicKeyHex string, message, signature []byte) bool {
-	pubBytes, err := hex.DecodeString(publicKeyHex)
-	if err != nil || len(pubBytes) != ed25519.PublicKeySize {
+// VerifySignature checks a signature against a given public key hex and message.
+func VerifySignature(publicKeyHex string, message, signature []byte) bool {
+	pub, err := HexToPublicKey(publicKeyHex)
+	if err != nil {
 		return false
 	}
-	return ed25519.Verify(ed25519.PublicKey(pubBytes), message, signature)
+	return VerifyKey(pub, message, signature)
 }
 
+// Verify is a backward-compatible alias for VerifySignature.
+func Verify(publicKeyHex string, message, signature []byte) bool {
+	return VerifySignature(publicKeyHex, message, signature)
+}
+
+// SetName updates the device name in memory.
 func (id *Identity) SetName(name string) {
 	id.mu.Lock()
 	defer id.mu.Unlock()
 	id.DeviceName = name
 }
 
+// Summary returns a key-value snapshot of the identity.
 func (id *Identity) Summary() map[string]string {
 	id.mu.RLock()
 	defer id.mu.RUnlock()
 	return map[string]string{
-		"device_id":   id.DeviceID,
-		"device_name": id.DeviceName,
-		"platform":    id.Platform,
-		"version":     id.Version,
-		"public_key":  id.PublicKey,
+		"device_id":    id.DeviceID,
+		"device_name":  id.DeviceName,
+		"platform":     id.Platform,
+		"architecture": id.Architecture,
+		"version":      id.Version,
+		"public_key":   id.PublicKey,
 	}
 }

@@ -3,7 +3,7 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: 'SynX — Next-Gen Decentralized LAN File Transfer Mesh',
-  description: 'Ultra-fast, zero-cloud peer-to-peer file streaming over local Wi-Fi and Ethernet. Powered by chunked parallel streams, real-time mesh discovery, and cryptographic SHA-256 verification.',
+  description: 'Fast, direct device-to-device file sharing over a local network. Built with a focus on simplicity, speed, privacy, and seamless transfers without relying on cloud storage.',
 };
 
 export default function RootLayout({

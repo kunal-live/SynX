@@ -12,6 +12,8 @@ import { TransfersView } from '@/components/TransfersView';
 import { DevicesView } from '@/components/DevicesView';
 import { StorageExplorer } from '@/components/StorageExplorer';
 import { SettingsView } from '@/components/SettingsView';
+import { TerminalView } from '@/components/TerminalView';
+import { CapabilitiesView } from '@/components/CapabilitiesView';
 import { PairingModal } from '@/components/PairingModal';
 import { Toast } from '@/components/Toast';
 
@@ -164,8 +166,10 @@ export default function Home() {
 
   // Header Titles Mapping
   const titles: Record<string, [string, string]> = {
-    overview: ['Mesh Overview', 'Real-time LAN peer topology and streaming queue'],
-    devices: ['Connected Nodes', 'Discovered LAN devices and verified trust records'],
+    overview: ['Mesh Overview', 'Real-time LAN peer topology and developer communication mesh'],
+    devices: ['Connected Nodes', 'Discovered developer workstations and verified cryptographic trust'],
+    terminal: ['Remote Terminal', 'Interactive pseudo-terminal session with local or remote developer node'],
+    capabilities: ['Capability Registry', 'Inspect advertised capabilities, test developer tools, and permissions'],
     transfers: ['Transfer Streams', 'High-throughput chunk streams and verified commits'],
     explorer: ['Shared Storage', 'Direct access to your local SynX shared directory'],
     settings: ['Node Settings', 'Security tokens, port allocation, and storage directories']
@@ -207,9 +211,9 @@ export default function Home() {
                     <span className="pulse-beacon" style={{ background: 'var(--cyan)', boxShadow: '0 0 8px var(--cyan)' }}></span>
                     ⚡ Zero-Cloud • Decentralized P2P Mesh
                   </div>
-                  <h2>Ultra-Fast Local Network File Transfer</h2>
+                  <h2>Fast Direct Local File Sharing</h2>
                   <p>
-                    SynX establishes direct, high-throughput peer-to-peer pipelines across all devices on your Wi-Fi and Ethernet. Zero external cloud servers, 8MB chunked streaming, and real-time SHA-256 integrity verification.
+                    SynX is a cross-platform desktop application for fast, direct device-to-device file sharing over a local network. Built with a focus on simplicity, speed, privacy, and seamless transfers without relying on cloud storage.
                   </p>
                   <div className="hero-actions">
                     <button className="btn btn-primary" onClick={() => setCurrentPage('devices')}>
@@ -299,7 +303,23 @@ export default function Home() {
                 onOpenPairModal={handleOpenPairModal}
                 onShowPINModal={handleOpenPairModal}
                 onSendToPeer={handleQuickSendToPeer}
+                onOpenTerminal={(peerId) => {
+                  setSelectedTarget(peerId);
+                  setCurrentPage('terminal');
+                }}
               />
+            </div>
+          )}
+
+          {currentPage === 'terminal' && (
+            <div className="page-fade-in" style={{ height: 'calc(100vh - 120px)' }}>
+              <TerminalView nodeName={state.name} />
+            </div>
+          )}
+
+          {currentPage === 'capabilities' && (
+            <div className="page-fade-in">
+              <CapabilitiesView />
             </div>
           )}
 

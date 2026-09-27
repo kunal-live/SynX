@@ -1,6 +1,6 @@
 # SynX — Next-Gen Decentralized LAN File Transfer Mesh
 
-> **Ultra-fast, zero-cloud peer-to-peer file transfer system engineered for local area networks.** Built with Go, Wails v2, pure-Go SQLite WAL persistence, and Next.js 16 + React 19.
+> **SynX** is a cross-platform desktop application for fast, direct device-to-device file sharing over a local network. Built with a focus on simplicity, speed, privacy, and seamless transfers without relying on cloud storage.
 
 [![Go Version](https://img.shields.io/badge/Go-1.25+-00ADD8?style=flat&logo=go)](https://golang.org)
 [![Next.js Version](https://img.shields.io/badge/Next.js-16.3-000000?style=flat&logo=next.js)](https://nextjs.org)
@@ -12,7 +12,9 @@
 
 ## Overview
 
-**SynX** connects all devices on your local Wi-Fi or Ethernet network directly. There are no third-party servers, no telemetry, no bandwidth caps, and no cloud middlemen. 
+**SynX** is a cross-platform desktop application for fast, direct device-to-device file sharing over a local network. Built with a focus on simplicity, speed, privacy, and seamless transfers without relying on cloud storage.
+
+The current desktop build provides the foundation for **real peer-to-peer file transfers**, with live transfer progress and resumable downloads planned as the next milestone. There are no third-party servers, no telemetry, no bandwidth caps, and no cloud middlemen. 
 
 Whether transferring multi-gigabyte disk images, video footage, archives, or source code directories, SynX saturates your local wire speed with chunked parallel streaming, streaming SHA-256 integrity verification, and automatic failure recovery.
 

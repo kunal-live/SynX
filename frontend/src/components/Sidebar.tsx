@@ -65,6 +65,27 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </button>
 
         <button
+          className={`nav-item ${currentPage === 'terminal' ? 'active' : ''}`}
+          onClick={() => onPageChange('terminal')}
+        >
+          <svg viewBox="0 0 24 24" fill="none" strokeWidth="2">
+            <polyline points="4 17 10 11 4 5" />
+            <line x1="12" y1="19" x2="20" y2="19" />
+          </svg>
+          <span>Remote Terminal</span>
+        </button>
+
+        <button
+          className={`nav-item ${currentPage === 'capabilities' ? 'active' : ''}`}
+          onClick={() => onPageChange('capabilities')}
+        >
+          <svg viewBox="0 0 24 24" fill="none" strokeWidth="2">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+          </svg>
+          <span>Capabilities</span>
+        </button>
+
+        <button
           className={`nav-item ${currentPage === 'transfers' ? 'active' : ''}`}
           onClick={() => onPageChange('transfers')}
         >

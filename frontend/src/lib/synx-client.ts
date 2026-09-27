@@ -165,5 +165,109 @@ export const synxClient = {
       method: 'POST',
       body: file
     });
+  },
+
+  // --- Developer Platform APIs (Section 10 & 15) ---
+
+  async openTerminal(cols = 80, rows = 24, shell = ''): Promise<{ session_id: string } | null> {
+    try {
+      const res = await fetch('/api/terminal/open', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ cols, rows, shell })
+      });
+      if (res.ok) {
+        const d = await res.json();
+        return d.data || d;
+      }
+    } catch (e) {
+      console.error('Failed to open terminal', e);
+    }
+    return null;
+  },
+
+  async sendTerminalInput(sessionId: string, data: string): Promise<void> {
+    try {
+      await fetch('/api/terminal/input', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ session_id: sessionId, data })
+      });
+    } catch (_) {}
+  },
+
+  async getTerminalOutput(sessionId: string): Promise<{ output: string; closed: boolean }> {
+    try {
+      const res = await fetch(`/api/terminal/output?session_id=${encodeURIComponent(sessionId)}`);
+      if (res.ok) return await res.json();
+    } catch (_) {}
+    return { output: '', closed: false };
+  },
+
+  async closeTerminal(sessionId: string): Promise<void> {
+    try {
+      await fetch('/api/terminal/close', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ session_id: sessionId })
+      });
+    } catch (_) {}
+  },
+
+  async listTerminalSessions(): Promise<any[]> {
+    try {
+      const res = await fetch('/api/terminal/list');
+      if (res.ok) return await res.json();
+    } catch (_) {}
+    return [];
+  },
+
+  async executeCommand(command: string, dir = '', timeout = 30): Promise<any> {
+    try {
+      const res = await fetch('/api/command/execute', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ command, dir, timeout })
+      });
+      if (res.ok) {
+        const d = await res.json();
+        return d.data || d;
+      }
+    } catch (e) {
+      console.error('Failed to execute command', e);
+    }
+    return null;
+  },
+
+  async getClipboard(): Promise<string> {
+    try {
+      const res = await fetch('/api/clipboard');
+      if (res.ok) {
+        const d = await res.json();
+        return d.data?.text || '';
+      }
+    } catch (_) {}
+    return '';
+  },
+
+  async setClipboard(text: string): Promise<void> {
+    try {
+      await fetch('/api/clipboard', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text })
+      });
+    } catch (_) {}
+  },
+
+  async getDevices(): Promise<any[]> {
+    try {
+      const res = await fetch('/api/devices');
+      if (res.ok) {
+        const d = await res.json();
+        return d.devices || [];
+      }
+    } catch (_) {}
+    return [];
   }
 };
