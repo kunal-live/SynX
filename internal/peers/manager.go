@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"synx/internal/events"
+	"synx/internal/observability"
 	"synx/internal/storage"
 )
 
@@ -24,13 +25,38 @@ type Peer struct {
 	Address      string     `json:"address"`
 	Port         int        `json:"port"`
 	Platform     string     `json:"platform"`
+	Architecture string     `json:"architecture,omitempty"`
 	Version      string     `json:"version"`
-	Token        string     `json:"token"`
-	PublicKey    string     `json:"public_key"`
+	Token        string     `json:"token,omitempty"`
+	PublicKey    string     `json:"public_key,omitempty"`
 	Capabilities []string   `json:"capabilities"`
 	LastSeen     time.Time  `json:"last_seen"`
 	Status       PeerStatus `json:"status"`
 	Trusted      bool       `json:"trusted"`
+
+	// Aliases for compatibility with developer platform schema
+	DeviceID    string   `json:"device_id,omitempty"`
+	DeviceName  string   `json:"device_name,omitempty"`
+	IPAddresses []string `json:"ip_addresses,omitempty"`
+}
+
+func (p *Peer) HasCapability(name string) bool {
+	for _, c := range p.Capabilities {
+		if c == name {
+			return true
+		}
+	}
+	return false
+}
+
+func (p *Peer) IsOnline(timeout time.Duration) bool {
+	if p.Status == StatusOffline {
+		return false
+	}
+	if timeout <= 0 {
+		timeout = 15 * time.Second
+	}
+	return time.Since(p.LastSeen) <= timeout
 }
 
 type Manager struct {
@@ -77,28 +103,49 @@ func (m *Manager) loadPersistedDevices() {
 			status = StatusTrusted
 		}
 		m.peers[d.ID] = &Peer{
-			ID:        d.ID,
-			Name:      d.Name,
-			Platform:  d.Platform,
-			Version:   d.Version,
-			PublicKey: d.PublicKey,
-			Trusted:   d.Trusted,
-			Status:    status,
-			LastSeen:  time.Unix(d.LastSeen, 0),
+			ID:         d.ID,
+			DeviceID:   d.ID,
+			Name:       d.Name,
+			DeviceName: d.Name,
+			Platform:   d.Platform,
+			Version:    d.Version,
+			PublicKey:  d.PublicKey,
+			Trusted:    d.Trusted,
+			Status:     status,
+			LastSeen:   time.Unix(d.LastSeen, 0),
 		}
 	}
 }
 
 func (m *Manager) AddOrUpdate(p Peer) {
+	id := p.ID
+	if id == "" {
+		id = p.DeviceID
+	}
+	if id == "" {
+		return
+	}
+	p.ID = id
+	p.DeviceID = id
+	if p.Name == "" && p.DeviceName != "" {
+		p.Name = p.DeviceName
+	}
+	if p.DeviceName == "" && p.Name != "" {
+		p.DeviceName = p.Name
+	}
+
 	m.mu.Lock()
-	existing, found := m.peers[p.ID]
+	existing, found := m.peers[id]
 	if !found {
 		p.LastSeen = time.Now()
 		if p.Status == "" {
 			p.Status = StatusDiscovered
 		}
-		m.peers[p.ID] = &p
+		m.peers[id] = &p
+		active := m.activeCountLocked()
 		m.mu.Unlock()
+
+		observability.DefaultMetrics().SetPeerCount(active)
 
 		if m.bus != nil {
 			m.bus.Publish("peer.discovered", map[string]any{
@@ -128,6 +175,7 @@ func (m *Manager) AddOrUpdate(p Peer) {
 	existing.LastSeen = time.Now()
 	if p.Name != "" {
 		existing.Name = p.Name
+		existing.DeviceName = p.Name
 	}
 	if p.Address != "" {
 		existing.Address = p.Address
@@ -147,13 +195,22 @@ func (m *Manager) AddOrUpdate(p Peer) {
 	if len(p.Capabilities) > 0 {
 		existing.Capabilities = p.Capabilities
 	}
+	if len(p.IPAddresses) > 0 {
+		existing.IPAddresses = p.IPAddresses
+	}
+	if p.Architecture != "" {
+		existing.Architecture = p.Architecture
+	}
 	if p.Trusted {
 		existing.Trusted = true
 		existing.Status = StatusTrusted
 	} else if existing.Status == StatusOffline {
 		existing.Status = StatusReachable
 	}
+	active := m.activeCountLocked()
 	m.mu.Unlock()
+
+	observability.DefaultMetrics().SetPeerCount(active)
 
 	if m.db != nil {
 		_ = m.db.UpsertDevice(storage.DeviceRecord{
@@ -173,6 +230,13 @@ func (m *Manager) Get(id string) (*Peer, bool) {
 	defer m.mu.RUnlock()
 	p, ok := m.peers[id]
 	if !ok {
+		// Search by DeviceID fallback
+		for _, peer := range m.peers {
+			if peer.DeviceID == id {
+				cpy := *peer
+				return &cpy, true
+			}
+		}
 		return nil, false
 	}
 	cpy := *p
@@ -182,7 +246,10 @@ func (m *Manager) Get(id string) (*Peer, bool) {
 func (m *Manager) Remove(id string) {
 	m.mu.Lock()
 	delete(m.peers, id)
+	active := m.activeCountLocked()
 	m.mu.Unlock()
+
+	observability.DefaultMetrics().SetPeerCount(active)
 
 	if m.bus != nil {
 		m.bus.Publish("peer.disconnected", map[string]any{"peer_id": id})
@@ -198,6 +265,22 @@ func (m *Manager) List() []Peer {
 		out = append(out, *p)
 	}
 	return out
+}
+
+func (m *Manager) ActiveCount() int {
+	m.mu.RLock()
+	defer m.mu.RUnlock()
+	return m.activeCountLocked()
+}
+
+func (m *Manager) activeCountLocked() int {
+	count := 0
+	for _, p := range m.peers {
+		if p.Status != StatusOffline {
+			count++
+		}
+	}
+	return count
 }
 
 func (m *Manager) SetTrusted(id string, trusted bool) {
@@ -226,20 +309,29 @@ func (m *Manager) cleanupLoop() {
 		case <-m.stopCh:
 			return
 		case <-ticker.C:
+			var disconnected []Peer
 			m.mu.Lock()
 			now := time.Now()
 			for _, p := range m.peers {
 				if now.Sub(p.LastSeen) > 15*time.Second && p.Status != StatusOffline {
 					p.Status = StatusOffline
-					if m.bus != nil {
-						m.bus.Publish("peer.disconnected", map[string]any{
-							"peer_id": p.ID,
-							"name":    p.Name,
-						})
-					}
+					disconnected = append(disconnected, *p)
 				}
 			}
+			active := m.activeCountLocked()
 			m.mu.Unlock()
+
+			observability.DefaultMetrics().SetPeerCount(active)
+
+			if m.bus != nil {
+				for _, p := range disconnected {
+					m.bus.Publish("peer.disconnected", map[string]any{
+						"peer_id": p.ID,
+						"name":    p.Name,
+					})
+				}
+			}
 		}
 	}
 }
+

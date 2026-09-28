@@ -1,7 +1,6 @@
 package observability
 
 import (
-	"sync"
 	"sync/atomic"
 	"time"
 )
@@ -14,9 +13,7 @@ type Metrics struct {
 	totalTransfers   atomic.Int64
 	failedTransfers  atomic.Int64
 	completedSuccess atomic.Int64
-
-	mu        sync.RWMutex
-	peerCount int
+	peerCount        atomic.Int64
 }
 
 var globalMetrics = NewMetrics()
@@ -40,15 +37,25 @@ func (m *Metrics) IncFailedTransfers()      { m.failedTransfers.Add(1) }
 func (m *Metrics) IncCompletedSuccess()     { m.completedSuccess.Add(1) }
 
 func (m *Metrics) SetPeerCount(count int) {
-	m.mu.Lock()
-	defer m.mu.Unlock()
-	m.peerCount = count
+	m.peerCount.Store(int64(count))
+}
+
+func (m *Metrics) GetPeerCount() int {
+	return int(m.peerCount.Load())
+}
+
+func (m *Metrics) Reset() {
+	m.bytesSent.Store(0)
+	m.bytesReceived.Store(0)
+	m.activeTransfers.Store(0)
+	m.totalTransfers.Store(0)
+	m.failedTransfers.Store(0)
+	m.completedSuccess.Store(0)
+	m.peerCount.Store(0)
+	m.startTime = time.Now()
 }
 
 func (m *Metrics) Snapshot() map[string]any {
-	m.mu.RLock()
-	defer m.mu.RUnlock()
-
 	return map[string]any{
 		"uptime_seconds":    int64(time.Since(m.startTime).Seconds()),
 		"bytes_sent":        m.bytesSent.Load(),
@@ -57,6 +64,7 @@ func (m *Metrics) Snapshot() map[string]any {
 		"total_transfers":   m.totalTransfers.Load(),
 		"failed_transfers":  m.failedTransfers.Load(),
 		"completed_success": m.completedSuccess.Load(),
-		"peer_count":        m.peerCount,
+		"peer_count":        int(m.peerCount.Load()),
 	}
 }
+

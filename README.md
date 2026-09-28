@@ -112,6 +112,15 @@ The resulting executable is located in `build/bin/synx.exe`.
 
 ---
 
+## Privacy & Open-Source Policies
+
+SynX is committed to digital sovereignty, zero external tracking, and full user data transparency:
+- [Privacy Policy](PRIVACY.md) — Complete disclosure of local-first data architecture, zero telemetry, and local storage.
+- [Terms & Conditions](TERMS.md) — MIT licensing, lawful network usage terms, and disclaimers.
+- [Cookie & Local Storage Policy](COOKIE_POLICY.md) — Zero HTTP/tracking cookies; local client-side storage transparency.
+
+---
+
 ## License
 
 MIT License. See [LICENSE](LICENSE) for details.

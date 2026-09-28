@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --font-main: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', 'Cascadia Code', 'Fira Code', Menlo, Monaco, Consolas, monospace;
   --font-display: 'Space Grotesk', var(--font-main);
 
   /* High Contrast Sci-Fi Void Palette */
@@ -23,7 +23,7 @@
   --text-pure: #ffffff;
   --text-high: #f1f5f9;
   --text-med: #94a3b8;
-  --text-dim: #64748b;
+  --text-dim: #8ea0b5;
 
   /* Neon Accents */
   --cyan: #00f0ff;

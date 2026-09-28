@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"synx/internal/chunk"
+	"synx/internal/observability"
 	"synx/internal/peers"
 	"synx/internal/protocol"
 )
@@ -34,9 +35,15 @@ func NewHTTPTransport() *HTTPTransport {
 }
 
 func peerURL(peer peers.Peer, endpoint string) string {
-	addr := peer.Address
+	addr := strings.TrimSpace(peer.Address)
+	if addr == "" {
+		addr = "127.0.0.1:8787"
+	}
 	if !strings.Contains(addr, "://") {
 		addr = "http://" + addr
+	}
+	if !strings.HasPrefix(endpoint, "/") {
+		endpoint = "/" + endpoint
 	}
 	return strings.TrimRight(addr, "/") + endpoint
 }
@@ -61,7 +68,12 @@ func (t *HTTPTransport) Negotiate(ctx context.Context, peer peers.Peer, req prot
 
 	resp, err := t.client.Do(httpReq)
 	if err != nil {
-		// Fallback for legacy MVP endpoint
+		return nil, fmt.Errorf("failed to connect to peer %s: %w", peer.Address, err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode == http.StatusNotFound {
+		// Fallback for legacy MVP endpoint only when remote returns 404
 		return &protocol.TransferNegotiationResponse{
 			TransferID:   fmt.Sprintf("tx_legacy_%d", time.Now().UnixNano()),
 			Accepted:     true,
@@ -69,10 +81,10 @@ func (t *HTTPTransport) Negotiate(ctx context.Context, peer peers.Peer, req prot
 			ResumeOffset: 0,
 		}, nil
 	}
-	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusCreated {
-		return nil, fmt.Errorf("remote rejected transfer: HTTP %d", resp.StatusCode)
+		body, _ := io.ReadAll(resp.Body)
+		return nil, fmt.Errorf("remote rejected transfer (HTTP %d): %s", resp.StatusCode, string(body))
 	}
 
 	var res protocol.TransferNegotiationResponse
@@ -110,6 +122,7 @@ func (t *HTTPTransport) SendChunk(ctx context.Context, peer peers.Peer, transfer
 		return fmt.Errorf("chunk upload failed (HTTP %d): %s", resp.StatusCode, string(body))
 	}
 
+	observability.DefaultMetrics().AddBytesSent(int64(len(ch.Data)))
 	return nil
 }
 
@@ -133,10 +146,16 @@ func (t *HTTPTransport) Commit(ctx context.Context, peer peers.Peer, transferID,
 	}
 	defer resp.Body.Close()
 
+	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusCreated {
+		body, _ := io.ReadAll(resp.Body)
+		return nil, fmt.Errorf("commit failed (HTTP %d): %s", resp.StatusCode, string(body))
+	}
+
 	var cr protocol.CommitResponse
 	if err := json.NewDecoder(resp.Body).Decode(&cr); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("invalid commit response: %w", err)
 	}
 
 	return &cr, nil
 }
+

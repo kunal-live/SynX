@@ -241,6 +241,9 @@ func (m *Manager) executeTransfer(t *Transfer) {
 	t.StartedAt = time.Now()
 	t.Status = StatusTransferring
 
+	observability.DefaultMetrics().IncActiveTransfers()
+	observability.DefaultMetrics().IncTotalTransfers()
+
 	m.bus.Publish("transfer.started", map[string]any{"id": t.ID, "name": t.FileName})
 
 	peer, ok := m.peerMgr.Get(t.PeerID)
@@ -359,6 +362,8 @@ func (m *Manager) executeTransfer(t *Transfer) {
 	}
 
 	observability.Info("Transfer %s (%s) completed successfully", t.ID, t.FileName)
+	observability.DefaultMetrics().DecActiveTransfers()
+	observability.DefaultMetrics().IncCompletedSuccess()
 	m.bus.Publish("transfer.completed", map[string]any{"id": t.ID, "name": t.FileName})
 }
 
@@ -384,6 +389,8 @@ func (m *Manager) failTransfer(t *Transfer, reason string) {
 	}
 
 	observability.Error("Transfer %s failed: %s", t.ID, reason)
+	observability.DefaultMetrics().DecActiveTransfers()
+	observability.DefaultMetrics().IncFailedTransfers()
 	m.bus.Publish("transfer.failed", map[string]any{"id": t.ID, "reason": reason})
 }
 
@@ -394,6 +401,8 @@ func (m *Manager) cancelTransfer(t *Transfer) {
 	if m.db != nil {
 		_ = m.db.UpdateTransferProgress(t.ID, t.BytesTransferred, string(StatusCancelled))
 	}
+	observability.DefaultMetrics().DecActiveTransfers()
+	observability.DefaultMetrics().IncFailedTransfers()
 	m.bus.Publish("transfer.cancelled", map[string]any{"id": t.ID})
 }
 

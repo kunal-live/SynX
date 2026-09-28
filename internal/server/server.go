@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strconv"
 	"strings"
 	"sync"
@@ -436,6 +437,7 @@ func (s *Server) handleChunkUpload(w http.ResponseWriter, r *http.Request, txID 
 		http.Error(w, "failed to read chunk payload", 500)
 		return
 	}
+	observability.DefaultMetrics().AddBytesReceived(int64(len(data)))
 
 	offset := int64(chunkIndex) * st.ChunkSize
 	ch := &chunk.Chunk{
@@ -512,6 +514,7 @@ func (s *Server) handleCommit(w http.ResponseWriter, r *http.Request, txID strin
 		})
 	}
 
+	observability.DefaultMetrics().IncCompletedSuccess()
 	writeJSON(w, protocol.CommitResponse{
 		Status:   "completed",
 		Verified: true,
@@ -551,15 +554,21 @@ func (s *Server) legacyState(w http.ResponseWriter, r *http.Request) {
 	if s.cfg.PeerMgr != nil {
 		peersList = s.cfg.PeerMgr.List()
 	}
+	deviceID := ""
+	if s.cfg.Identity != nil {
+		deviceID = s.cfg.Identity.DeviceID
+	}
 	writeJSON(w, map[string]any{
 		"name":      "SynX",
-		"version":   "0.2.0-desktop",
-		"platform":  "windows",
+		"version":   "1.0.0",
+		"device_id": deviceID,
+		"platform":  runtime.GOOS,
 		"sharedDir": s.cfg.Dir,
 		"token":     s.cfg.Token,
 		"address":   r.Host,
 		"peers":     peersList,
 		"transfers": []any{},
+		"metrics":   observability.DefaultMetrics().Snapshot(),
 	})
 }
 
@@ -603,6 +612,7 @@ func (s *Server) legacyDownload(w http.ResponseWriter, r *http.Request) {
 	defer f.Close()
 
 	st, _ := f.Stat()
+	observability.DefaultMetrics().AddBytesSent(st.Size())
 	w.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=%q", st.Name()))
 	http.ServeContent(w, r, st.Name(), st.ModTime(), f)
 }
@@ -640,6 +650,7 @@ func (s *Server) legacyUpload(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), 500)
 		return
 	}
+	observability.DefaultMetrics().AddBytesReceived(n)
 
 	h := sha256.New()
 	_, _ = f.Seek(0, io.SeekStart)

@@ -209,11 +209,11 @@ export default function Home() {
                 <div>
                   <div className="hero-info-tag">
                     <span className="pulse-beacon" style={{ background: 'var(--cyan)', boxShadow: '0 0 8px var(--cyan)' }}></span>
-                    ⚡ Zero-Cloud • Decentralized P2P Mesh
+                    ⚡ Zero-Cloud • Developer LAN Mesh
                   </div>
-                  <h2>Fast Direct Local File Sharing</h2>
+                  <h2>Developer Connectivity Platform</h2>
                   <p>
-                    SynX is a cross-platform desktop application for fast, direct device-to-device file sharing over a local network. Built with a focus on simplicity, speed, privacy, and seamless transfers without relying on cloud storage.
+                    SynX connects your development environment across devices. Auto-discover local workstations, open interactive remote terminals, execute authenticated developer tools, and stream files over high-speed sockets.
                   </p>
                   <div className="hero-actions">
                     <button className="btn btn-primary" onClick={() => setCurrentPage('devices')}>
@@ -224,11 +224,12 @@ export default function Home() {
                       </svg>
                       Explore Mesh Map
                     </button>
-                    <button className="btn" onClick={handleOpenFolder}>
+                    <button className="btn" onClick={() => setCurrentPage('terminal')}>
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
+                        <polyline points="4 17 10 11 4 5" />
+                        <line x1="12" y1="19" x2="20" y2="19" />
                       </svg>
-                      Open Local Folder
+                      Launch Terminal
                     </button>
                   </div>
                 </div>

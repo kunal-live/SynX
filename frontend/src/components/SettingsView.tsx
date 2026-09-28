@@ -93,6 +93,32 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
           </button>
         </div>
       </div>
+
+      {/* Privacy & Data Transparency */}
+      <div className="settings-card" style={{ borderColor: 'rgba(0, 240, 255, 0.2)' }}>
+        <h3>
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--cyan)" strokeWidth="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          </svg>
+          Privacy &amp; Data Transparency
+        </h3>
+        <p style={{ fontSize: '12px', color: 'var(--text-med)', lineHeight: 1.5, marginBottom: '14px' }}>
+          SynX is 100% decentralized and local-first. We collect <strong>zero telemetry</strong>, operate <strong>zero cloud tracking servers</strong>, and use <strong>no third-party embeds</strong>. All transfers stream directly peer-to-peer over your local area network.
+        </p>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '12px' }}>
+          <div style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid var(--border-dim)', borderRadius: '8px', padding: '10px' }}>
+            <div style={{ fontSize: '11px', fontWeight: 600, color: 'var(--cyan)', marginBottom: '4px' }}>🛡️ Zero Telemetry</div>
+            <div style={{ fontSize: '11px', color: 'var(--text-dim)', lineHeight: 1.4 }}>No Google Analytics, Sentry, or user tracking SDKs.</div>
+          </div>
+          <div style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid var(--border-dim)', borderRadius: '8px', padding: '10px' }}>
+            <div style={{ fontSize: '11px', fontWeight: 600, color: 'var(--violet)', marginBottom: '4px' }}>🍪 Zero Tracking Cookies</div>
+            <div style={{ fontSize: '11px', color: 'var(--text-dim)', lineHeight: 1.4 }}>Client-side localStorage is used only for UI theme preferences.</div>
+          </div>
+        </div>
+        <div style={{ fontSize: '11px', color: 'var(--text-dim)', borderTop: '1px solid var(--border-dim)', paddingTop: '10px' }}>
+          Open-Source Compliance: <span style={{ color: 'var(--cyan)' }}>PRIVACY.md</span> • <span style={{ color: 'var(--cyan)' }}>TERMS.md</span> • <span style={{ color: 'var(--cyan)' }}>COOKIE_POLICY.md</span>
+        </div>
+      </div>
     </div>
   );
 };

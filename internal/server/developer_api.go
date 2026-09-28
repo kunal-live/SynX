@@ -29,7 +29,7 @@ var (
 	termBufMu       sync.RWMutex
 )
 
-func initDeveloperPlatform(dir string) {
+func initDeveloperPlatform(cfg Config) {
 	devRegistry = capability.NewRegistry()
 
 	terminalCap = terminal.New(func(sessionID string, data []byte) {
@@ -51,12 +51,18 @@ func initDeveloperPlatform(dir string) {
 	})
 
 	commandCap = command.New(func(senderID string) bool {
-		// Allow local requests or trusted peers
-		return true
+		// Allow local node requests or cryptographically trusted peers
+		if senderID == "" || senderID == "local" || (cfg.Identity != nil && senderID == cfg.Identity.DeviceID) {
+			return true
+		}
+		if cfg.TrustStore != nil && cfg.TrustStore.IsTrusted(senderID) {
+			return true
+		}
+		return false
 	})
 
 	clipboardCap = clipboard.New(true)
-	filesCap = files.New(dir)
+	filesCap = files.New(cfg.Dir)
 
 	_ = devRegistry.Register(terminalCap)
 	_ = devRegistry.Register(commandCap)
@@ -66,7 +72,7 @@ func initDeveloperPlatform(dir string) {
 
 // registerDeveloperAPI attaches the Developer Platform routes per Section 10 & 15.
 func (s *Server) registerDeveloperAPI(mux *http.ServeMux) {
-	initDeveloperPlatform(s.cfg.Dir)
+	initDeveloperPlatform(s.cfg)
 
 	mux.HandleFunc("/api/devices", s.apiDevices)
 	mux.HandleFunc("/api/devices/", s.apiDeviceRouter)

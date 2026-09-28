@@ -3,6 +3,7 @@ package security
 import (
 	"crypto/rand"
 	"encoding/hex"
+	"fmt"
 	"sync"
 	"time"
 
@@ -57,6 +58,10 @@ func (ts *TrustStore) loadFromDB() {
 }
 
 func (ts *TrustStore) TrustPeer(p TrustedPeer) error {
+	if p.PeerID == "" {
+		return fmt.Errorf("peer_id cannot be empty")
+	}
+
 	ts.mu.Lock()
 	defer ts.mu.Unlock()
 
@@ -80,14 +85,47 @@ func (ts *TrustStore) TrustPeer(p TrustedPeer) error {
 	return nil
 }
 
+func (ts *TrustStore) Get(peerID string) (*TrustedPeer, bool) {
+	if peerID == "" {
+		return nil, false
+	}
+	ts.mu.RLock()
+	defer ts.mu.RUnlock()
+	p, exists := ts.peers[peerID]
+	if !exists {
+		return nil, false
+	}
+	cpy := *p
+	return &cpy, true
+}
+
 func (ts *TrustStore) IsTrusted(peerID string) bool {
+	if peerID == "" {
+		return false
+	}
 	ts.mu.RLock()
 	defer ts.mu.RUnlock()
 	_, exists := ts.peers[peerID]
 	return exists
 }
 
+func (ts *TrustStore) VerifyToken(peerID, token string) bool {
+	if peerID == "" || token == "" {
+		return false
+	}
+	ts.mu.RLock()
+	defer ts.mu.RUnlock()
+	p, ok := ts.peers[peerID]
+	if !ok {
+		return false
+	}
+	return p.Token == token
+}
+
 func (ts *TrustStore) RevokePeer(peerID string) error {
+	if peerID == "" {
+		return nil
+	}
 	ts.mu.Lock()
 	defer ts.mu.Unlock()
 
@@ -114,6 +152,11 @@ func GenerateToken(byteCount int) string {
 		byteCount = 16
 	}
 	b := make([]byte, byteCount)
-	_, _ = rand.Read(b)
+	if _, err := rand.Read(b); err != nil {
+		for i := range b {
+			b[i] = byte(time.Now().UnixNano() >> (i * 8))
+		}
+	}
 	return hex.EncodeToString(b)
 }
+

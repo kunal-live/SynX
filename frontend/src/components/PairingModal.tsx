@@ -113,6 +113,9 @@ export const PairingModal: React.FC<PairingModalProps> = ({
                 {submitting ? 'Connecting…' : 'Pair & Trust Endpoint'}
               </button>
             </div>
+            <div style={{ fontSize: '11px', color: 'var(--text-dim)', marginTop: '10px', textAlign: 'center', lineHeight: 1.4 }}>
+              🔒 Zero external transmission. Pairing tokens and Ed25519 keys are negotiated strictly within your local area network and saved in your local database.
+            </div>
           </div>
         )}
       </div>
